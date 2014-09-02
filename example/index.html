@@ -7,8 +7,8 @@
 	<script>
 
 		window.addEventListener('load', function () {
-			
-			Validator.init(document.querySelector('form[name="test-form"]'), function (err, res) {
+
+			var validator1 = new Validator(document.querySelector('form[name="test-form"]'), function (err, res) {
 				
 				if (err) {
 					console.log('ERROR', err);
@@ -18,10 +18,24 @@
 				console.log('SUBMIT SUCCESS');
 
 				return false;
-			});	
+			});
+
+			var validator2 = new Validator(document.querySelector('form[name="test-form2"]'), function (err, res) {
+				
+				if (err) {
+					console.log('ERROR2', err);
+					return false;
+				}
+
+				console.log('SUBMIT2 SUCCESS2');
+
+				return false;
+			});
+
+
 		});
 
-
+	
 
 	</script>
 </head>
@@ -51,7 +65,19 @@
 	</form>
 
 
+	<form name="test-form2">
+		
+		<p>
+			<input type="text" name="name" data-rule="name" placeholder="name" />
+		</p>
 
+		<p>
+			<input type="text" name="lastname" data-rule="lastname" placeholder="lastname" />
+		</p>
+
+		<input type="submit" value="Submit"/>
+
+	</form>
 
 </body>
 </html>

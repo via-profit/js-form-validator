@@ -1,20 +1,139 @@
-(function (root, factory) {
+(function () {
 
-    'use strict';
+	Validator = function (formHandle, submitCallback, settings) {
+	
+		var jsFormValidator = new JsFormValidator(formHandle, submitCallback, settings);
 
-    if (root.exports) {
-        root.module.exports = factory();
-    } else {
-        root.Validator = factory(root);
-    }
+		function multiplex(object, memberList, fn) {
+			var a = 0,
+				l = memberList.length;
 
-}(this, function () {
+			for(a = 0; a < l; a += 1) {
+				fn(object, memberList[a]);
+			}
+		}; 	
 
+		multiplex(Validator.prototype, ['validate'], function(object, member) {
+			object[member] = function(){
+				var args = arguments;
+				return this.each(function(){          
+					this[member].apply(this,args);
+				});
+			};
+		});  
 
-	var validator = {
-		settings: {
-			onAir: true
-		},
+		return this;
+	}
+
+	var JsFormValidator = function (formHandle, submitCallback, settings) {
+
+		this.settings = {
+			onAir: true,
+			removeSpaces: false,
+			locale: 'ru',
+			messages: {
+				en: {
+					nutnull: {
+						empty: 'Place value',
+						incorrect: 'Incorrect value',
+						helper: 'Use the all symbols'
+					},
+					name: {
+						empty: 'Please, enter your name',
+						incorrect: 'Incorrect name',
+						helper: 'Use the alphabet and spaces'
+					},
+					lastname: {
+						empty: 'Please, enter your lastname',
+						incorrect: 'Incorrect lastname',
+						helper: 'Use the alphabet and spaces'
+					},
+					phone: {
+						empty: 'Please, enter the phone number',
+						incorrect: 'Incorrect phone number',
+						helper: 'Use the digits, spaces and symbols "-", "_", "()"'
+					},
+					email: {
+						empty: 'Please, enter your email address',
+						incorrect: 'Incorrect email address',
+						helper: 'Use your realy email address'
+					}
+				},
+				ru: {
+					nutnull: {
+						empty: 'RU-Place value',
+						incorrect: 'RU-Incorrect value',
+						helper: 'RU-Use the all symbols'
+					},
+					name: {
+						empty: 'RU-Please, enter your name',
+						incorrect: 'RU-Incorrect name',
+						helper: 'RU-Use the alphabet and spaces'
+					},
+					lastname: {
+						empty: 'RU-Please, enter your lastname',
+						incorrect: 'RU-Incorrect lastname',
+						helper: 'RU-Use the alphabet and spaces'
+					},
+					phone: {
+						empty: 'RU-Please, enter the phone number',
+						incorrect: 'RU-Incorrect phone number',
+						helper: 'RU-Use the digits, spaces and symbols "-", "_", "()"'
+					},
+					email: {
+						empty: 'RU-Please, enter your email address',
+						incorrect: 'RU-Incorrect email address',
+						helper: 'RU-Use your realy email address'
+					}
+				}
+			}
+		};
+
+		if (!formHandle) {
+			return false;
+		}
+
+		var self = this,
+			eventList = ['keyup', 'change', 'blur'],
+			eventListLength = eventList.length,
+			n,
+			i;
+
+		//set handle
+		this.formHandle = (formHandle) ? formHandle : null;
+
+		//set callback
+		this.submitCallback = (submitCallback) ? submitCallback: null;
+
+		//get fields and rules
+		this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
+		
+		if (settings) {
+			for (n in settings) {
+				this.settings[n] = settings[n];
+			}
+		}
+		//set submit callback
+		if (this.submitCallback) {
+
+			this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+
+			if (this.settings.onAir) {
+				for (n in this.fields) {
+					
+					for (i = 0; i < eventListLength; i += 1) {
+						this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+					}
+				}
+			}
+
+		}
+
+		return this;
+	};
+
+	JsFormValidator.prototype = {
+
 		formHandle: null,
 		submitCallback: null,
 		errors: null,
@@ -24,13 +143,16 @@
 				return '' !== value;
 			},
 			name: function (value) {
-				return new RegExp(/^[a-zA-Z\sа-яА-ЯёЁ]+$/g).test(value);
+				if (value.length < 2) {
+					return false;
+				}
+				return new RegExp(/^[a-zA-Z\sа-яА-ЯёЁ-]+$/g).test(value);
 			},
 			lastname: function (value) {
 				return this.name(value);
 			},
 			phone: function (value) {
-				if ( value.length < 6 ) {
+				if ( value.replace(/[^0-9]+/gi, '').length < 6 ) {
 					return false;
 				}
 				return new RegExp(/^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/g).test(value);
@@ -39,37 +161,6 @@
 				return new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i).test(value);
 			}
 		},
-		locale: 'en',
-		messages: {
-			en: {
-				nutnull: {
-					empty: 'Place value',
-					incorrect: 'Incorrect value',
-					helper: 'Use the all symbols'
-				},
-				name: {
-					empty: 'Please, enter your name',
-					incorrect: 'Incorrect name',
-					helper: 'Use the alphabet and spaces'
-				},
-				lastname: {
-					empty: 'Please, enter your lastname',
-					incorrect: 'Incorrect lastname',
-					helper: 'Use the alphabet and spaces'
-				},
-				phone: {
-					empty: 'Please, enter the phone number',
-					incorrect: 'Incorrect phone number',
-					helper: 'Use the digits, spaces and symbols "-", "_", "()"'
-				},
-				email: {
-					empty: 'Please, enter your email address',
-					incorrect: 'Incorrect email address',
-					helper: 'Use your realy email address'
-				}
-			}
-		},
-
 		validate: function (validationField) {
 			
 			if (this.errors) {
@@ -98,15 +189,15 @@
 					}
 
 					if ('' === value) {
-						message = this.messages[this.locale][ruleName].empty;
+						message = this.settings.messages[this.settings.locale][ruleName].empty;
 					} else {
-						message = this.messages[this.locale][ruleName].incorrect;
+						message = this.settings.messages[this.settings.locale][ruleName].incorrect;
 					}
 
 					this.errors[n] = {
 						name: fields[n].name,
 						errorText: message,
-						helper: this.messages[this.locale][ruleName].helper
+						helper: this.settings.messages[this.settings.locale][ruleName].helper
 					}
 
 					if (!this.submitCallback) {
@@ -165,8 +256,15 @@
 		},
 		init: function (formHandle, submitCallback, settings) {
 			
+			if (!formHandle) {
+				return false;
+			}
+
 			var self = this,
-				n;
+				eventList = ['keyup', 'change', 'blur'],
+				eventListLength = eventList.length,
+				n,
+				i;
 
 			//set handle
 			this.formHandle = (formHandle) ? formHandle : null;
@@ -186,45 +284,51 @@
 			//set submit callback
 			if (this.submitCallback) {
 
-				this.formHandle.addEventListener('submit', self.events.submit);
+				this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
 
 				if (this.settings.onAir) {
 					for (n in this.fields) {
-
-						this.fields[n].handle.addEventListener('keyup', self.events.change);
-						this.fields[n].handle.addEventListener('change', self.events.change);
-						this.fields[n].handle.addEventListener('blur', self.events.change);
+						
+						for (i = 0; i < eventListLength; i += 1) {
+							this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+						}
 					}
 				}
 
 			}
 
-			return validator.publish;
+			return this;
 		},
 		events: {
 			submit: function (e) {
 				e.preventDefault();
 
 				//hide errors
-				validator.hideErrors();
+				this.hideErrors();
 				
 				//validate and show errors
-				if (!validator.validate()) {
-					validator.showErrors();
+				if (!this.validate()) {
+					this.showErrors();
 				}
 
 				//callback
-				validator.submitCallback((validator.errors) ? validator.errors : null, (validator.errors) ? false : true);
+				this.submitCallback((this.errors) ? this.errors : null, (this.errors) ? false : true);
 
 				return false;	
 			},
 			change: function (e) {
+
+				//remove spaces
+				if (this.settings.removeSpaces && new RegExp(/\s{2,}/g).test(e.target.value)) {
+					e.target.value = e.target.value.replace(/\s{2,}/g, ' ');
+				}
+
 				//hide errors for this
-				validator.hideErrors(this);
+				this.hideErrors(e.target);
 				
 				//validate and show errors for this
-				if (!validator.validate(this)) {
-					validator.showErrors(this);
+				if (!this.validate(e.target)) {
+					this.showErrors(e.target);
 				}
 			}
 		},
@@ -243,29 +347,8 @@
 
 			return retData;
 		}
+			
 	}
 
 
-
-
-	//out of space
-	function multiplex(object, memberList, fn) {
-		var a = 0,
-			l = memberList.length;
-
-		for(a = 0; a < l; a += 1) {
-			fn(object, memberList[a]);
-		}
-	}; 	
-
-	validator.publish = {};
-
-	multiplex(validator.publish, ['init', 'validate'], function (object, member) {
-		object[member] = function () {
-			return validator[member].apply(validator, arguments);
-		};
-	});
-
-	return validator.publish;
-
-}));
+})();
