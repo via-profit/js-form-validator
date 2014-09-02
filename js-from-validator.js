@@ -10,18 +10,45 @@
 
 }(this, function () {
 
+
 	var validator = {
-			
-		init: function (a, b) {
-			return a + '-' + b;
+
+		formHandle: null,
+
+		init: function (formHandle) {
+			this.formHandle = formHandle;
+			return validator.publish;
 		},
 
-		publish: {
-			init: function () {
-				return validator.init.apply(this, arguments);
-			}
+		start: function () {
+			return validator.publish;
+		},
+
+		sayOk: function () {
+			return validator.publish;
 		}
 	}
+
+
+
+
+	//out of space
+	function multiplex(object, memberList, fn) {
+		var a = 0,
+			l = memberList.length;
+
+		for(a = 0; a < l; a += 1) {
+			fn(object, memberList[a]);
+		}
+	}; 	
+
+	validator.publish = {};
+
+	multiplex(validator.publish, ['init', 'start'], function (object, member) {
+		object[member] = function () {
+			return validator[member].apply(validator, arguments);
+		};
+	});
 
 	return validator.publish;
 
