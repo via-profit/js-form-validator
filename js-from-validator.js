@@ -30,6 +30,8 @@
 		this.settings = {
 			onAir: true,
 			removeSpaces: false,
+			showErrors: true,
+			showHelpers: false,
 			locale: 'ru',
 			messages: {
 				en: {
@@ -61,29 +63,29 @@
 				},
 				ru: {
 					nutnull: {
-						empty: 'RU-Place value',
-						incorrect: 'RU-Incorrect value',
-						helper: 'RU-Use the all symbols'
+						empty: 'Не оставляйте это поле пустым',
+						incorrect: 'Недопустимое значение',
+						helper: 'Любые символы'
 					},
 					name: {
-						empty: 'RU-Please, enter your name',
-						incorrect: 'RU-Incorrect name',
-						helper: 'RU-Use the alphabet and spaces'
+						empty: 'Укажите ваше Имя',
+						incorrect: 'Некорректное имя',
+						helper: 'Например, Иван'
 					},
 					lastname: {
-						empty: 'RU-Please, enter your lastname',
-						incorrect: 'RU-Incorrect lastname',
-						helper: 'RU-Use the alphabet and spaces'
+						empty: 'Укажите вашу Фамилию',
+						incorrect: 'Некорректная фамилия',
+						helper: 'Например, Иванов'
 					},
 					phone: {
-						empty: 'RU-Please, enter the phone number',
-						incorrect: 'RU-Incorrect phone number',
-						helper: 'RU-Use the digits, spaces and symbols "-", "_", "()"'
+						empty: 'Введите номер телефона',
+						incorrect: 'Некорректный номер',
+						helper: 'Например +7(618)216-99-55'
 					},
 					email: {
-						empty: 'RU-Please, enter your email address',
-						incorrect: 'RU-Incorrect email address',
-						helper: 'RU-Use your realy email address'
+						empty: 'Укажите ваш E-mail адрес',
+						incorrect: 'Некорректный E-mail',
+						helper: 'Например, email@mail.com'
 					}
 				}
 			}
@@ -108,6 +110,7 @@
 		//get fields and rules
 		this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
 		
+		//settings
 		if (settings) {
 			for (n in settings) {
 				this.settings[n] = settings[n];
@@ -132,12 +135,16 @@
 		return this;
 	};
 
+	//main prototype
 	JsFormValidator.prototype = {
 
+		//service objects
 		formHandle: null,
 		submitCallback: null,
 		errors: null,
 		fields: {},
+
+		//rules
 		rules: {
 			nutnull: function (value) {
 				return '' !== value;
@@ -215,30 +222,53 @@
 		},
 		hideErrors: function (validationField) {
 			var n,
-				errorDiv;
+				errorDiv,
+				helperDiv;
 
 			for (n in this.fields) {
-				
+
 				if ((validationField && validationField === this.fields[n].handle) || !validationField) {
-					errorDiv = this.fields[n].handle.nextElementSibling;
+
+					errorDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-error"]');
+					helperDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-helper"]');
 
 					if (errorDiv) {
-						 this.fields[n].handle.classList.remove('error');
+						this.fields[n].handle.classList.remove('error');
 						errorDiv.parentNode.removeChild(errorDiv);
-					}					
+					}
+
+					if (helperDiv) {
+						helperDiv.parentNode.removeChild(helperDiv);
+					}			
 				}
 			}
 		},
 		showErrors: function (validationField) {
 			var n,
 				errorDiv,
-				insertNodeError = function (refNode, text) {
-					errorDiv = document.createElement('div');
-					errorDiv.setAttribute('class', 'error');
-					errorDiv.setAttribute('data-type', 'validator-error');
-					errorDiv.innerHTML = text;
-					refNode.classList.add('error');	
-					refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
+				se = this.settings.showErrors,
+				sh = this.settings.showHelpers,
+				insertNodeError = function (refNode, errorObj) {
+					
+					refNode.classList.add('error');
+
+					//error
+					if (se) {
+						errorDiv = document.createElement('div');
+						errorDiv.setAttribute('class', 'error');
+						errorDiv.setAttribute('data-type', 'validator-error');
+						errorDiv.innerHTML = errorObj.errorText;
+						refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
+					}
+
+					//helper
+					if (sh) {
+						errorDiv = document.createElement('div');
+						errorDiv.setAttribute('class', 'helper');
+						errorDiv.setAttribute('data-type', 'validator-helper');
+						errorDiv.innerHTML = errorObj.helper;
+						refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
+					}
 				}
 
 			for (n in  this.errors) {
@@ -247,12 +277,12 @@
 
 					for (var i in this.fields){
 						if ( this.fields[i].handle.getAttribute('name') === validationField.getAttribute('name')) {
-							insertNodeError(this.fields[i].handle, this.errors[n].errorText);
+							insertNodeError(this.fields[i].handle, this.errors[n]);
 						}
 					}
 
 				} else {
-					insertNodeError(this.fields[n].handle, this.errors[n].errorText);
+					insertNodeError(this.fields[n].handle, this.errors[n]);
 				}
 			}
 		},
@@ -305,11 +335,15 @@
 			submit: function (e) {
 				e.preventDefault();
 
+				//validate
+				var res = this.validate();
+
 				//hide errors
 				this.hideErrors();
-				
-				//validate and show errors
-				if (!this.validate()) {
+
+				//show errors
+				if (!res) {
+					
 					this.showErrors();
 				}
 
