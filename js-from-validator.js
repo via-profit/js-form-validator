@@ -223,6 +223,7 @@
 					errorDiv = this.fields[n].handle.nextElementSibling;
 
 					if (errorDiv) {
+						 this.fields[n].handle.classList.remove('error');
 						errorDiv.parentNode.removeChild(errorDiv);
 					}					
 				}
@@ -236,7 +237,8 @@
 					errorDiv.setAttribute('class', 'error');
 					errorDiv.setAttribute('data-type', 'validator-error');
 					errorDiv.innerHTML = text;
-					refNode.parentNode.insertBefore(errorDiv, refNode);	
+					refNode.classList.add('error');	
+					refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
 				}
 
 			for (n in  this.errors) {
@@ -245,12 +247,12 @@
 
 					for (var i in this.fields){
 						if ( this.fields[i].handle.getAttribute('name') === validationField.getAttribute('name')) {
-							insertNodeError(this.fields[i].handle.nextSibling, this.errors[n].errorText);
+							insertNodeError(this.fields[i].handle, this.errors[n].errorText);
 						}
 					}
 
 				} else {
-					insertNodeError(this.fields[n].handle.nextSibling, this.errors[n].errorText);
+					insertNodeError(this.fields[n].handle, this.errors[n].errorText);
 				}
 			}
 		},
