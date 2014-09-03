@@ -40,6 +40,11 @@
 						incorrect: 'Incorrect value',
 						helper: 'Use the all symbols'
 					},
+					notzero: {
+						empty: 'Select this',
+						incorrect: 'Incorrect value',
+						helper: 'Just select'
+					},
 					name: {
 						empty: 'Please, enter your name',
 						incorrect: 'Incorrect name',
@@ -66,6 +71,11 @@
 						empty: 'Не оставляйте это поле пустым',
 						incorrect: 'Недопустимое значение',
 						helper: 'Любые символы'
+					},
+					notzero: {
+						empty: 'Сделайте выбор',
+						incorrect: 'Сделайте выбор',
+						helper: 'Просто выберите'
 					},
 					name: {
 						empty: 'Укажите ваше Имя',
@@ -148,6 +158,9 @@
 		rules: {
 			nutnull: function (value) {
 				return '' !== value;
+			},
+			notzero: function (value) {
+				return parseInt(value, 10) > 0;
 			},
 			name: function (value) {
 				if (value.length < 2) {
