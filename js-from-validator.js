@@ -30,12 +30,15 @@
 		this.settings = {
 			onAir: true,
 			removeSpaces: false,
+			autoHideHelpers: true,
+			autoHideErrors: true,
+			autoHideErrorsTimeout: 2000,
 			showErrors: true,
-			showHelpers: false,
+			showHelpers: true,
 			locale: 'ru',
 			messages: {
 				en: {
-					nutnull: {
+					required: {
 						empty: 'Place value',
 						incorrect: 'Incorrect value',
 						helper: 'Use the all symbols'
@@ -44,6 +47,31 @@
 						empty: 'Select this',
 						incorrect: 'Incorrect value',
 						helper: 'Just select'
+					},
+					integer: {
+						empty: 'Enter an integer',
+						incorrect: 'Incorrect integer',
+						helper: 'Example, 125'
+					},
+					float: {
+						empty: 'Enter an float number',
+						incorrect: 'Incorrect float',
+						helper: 'Example, 12.00'
+					},
+					min: {
+						empty: 'Enter more',
+						incorrect: 'Enter more',
+						helper: 'Enter more'
+					},
+					max: {
+						empty: 'Enter less',
+						incorrect: 'Enter less',
+						helper: 'Enter less'
+					},
+					between: {
+						empty: 'Enter the between',
+						incorrect: 'Enter the between',
+						helper: 'Enter the between'
 					},
 					name: {
 						empty: 'Please, enter your name',
@@ -67,7 +95,7 @@
 					}
 				},
 				ru: {
-					nutnull: {
+					required: {
 						empty: 'Не оставляйте это поле пустым',
 						incorrect: 'Недопустимое значение',
 						helper: 'Любые символы'
@@ -76,6 +104,31 @@
 						empty: 'Сделайте выбор',
 						incorrect: 'Сделайте выбор',
 						helper: 'Просто выберите'
+					},
+					integer: {
+						empty: 'Укажите натуральное число',
+						incorrect: 'Введенное значение не является натуральным числом',
+						helper: 'Например, 125'
+					},
+					float: {
+						empty: 'Укажите число с плавающей точкой',
+						incorrect: 'Введенное значение не является числом с плавающей точкой',
+						helper: 'Например, 12.00'
+					},
+					min: {
+						empty: 'Укажите число не меньше {0}',
+						incorrect: 'Указанное значение меньше {0}',
+						helper: 'Укажите значение больше {0}'
+					},
+					max: {
+						empty: 'Укажите число не более {0}',
+						incorrect: 'Указанное число больше {0}',
+						helper: 'Укажите число меньше чем {0}'
+					},
+					between: {
+						empty: 'Укажите диапозон от {0} до {1}',
+						incorrect: 'Укажите диапозон от {0} до {1}',
+						helper: 'Укажите диапозон от {0} до {1}'
 					},
 					name: {
 						empty: 'Укажите ваше Имя',
@@ -153,6 +206,7 @@
 		submitCallback: null,
 		errors: null,
 		fields: {},
+		intervalID: null,
 
 		//rules
 		rules: {
@@ -162,8 +216,29 @@
 			notzero: function (value) {
 				return parseInt(value, 10) > 0;
 			},
+			integer: function (value) {
+				return !isNaN(parseInt(value, 10));
+			},
+			float: function (value) {
+				return new RegExp(/^([0-9])+(\.)([0-9]+$)/gi).test(value);
+			},
+			min: function (value, params) {
+				return parseFloat(value) > parseFloat(params[0]);
+			},
+			max: function (value, params) {
+				return parseFloat(value) < parseFloat(params[0]);
+			},
+			between: function (value, params) {
+				if (this.float(value)) {
+					return parseFloat(value) >= parseFloat(params[0]) && parseFloat(value) <= parseFloat(params[1]);
+				} else if (this.integer(value)){
+					return parseInt(value, 10) >= parseInt(params[0], 10) && parseInt(value, 10) <= parseInt(params[1], 10);
+				} else {
+					return false;
+				}
+			},
 			name: function (value) {
-				if (value.length < 2) {
+				if (value.length > 0 && value.length < 2) {
 					return false;
 				}
 				return new RegExp(/^[a-zA-Z\sа-яА-ЯёЁ-]+$/g).test(value);
@@ -188,40 +263,102 @@
 			}
 
 			var n,
+				i,
+				l,
 				ruleName,
 				value,
+				defaultValue,
+				result = true,
 				message,
+				helper,
 				fields = this.fields;
+
 
 			if (validationField) {
 				fields = this.getFields([validationField]);
 			}
 
+			//each fields
 			for (n in  fields) {
-				
-				ruleName = fields[n].rule;
-				value = fields[n].handle.value.trim();
 
-				if (this.rules[ruleName] && !this.rules[ruleName](value)) {
+				result = true;
+				l = fields[n].rule.length;
+				params = [];
 
-					if (!this.errors) {
-						this.errors = {};
-					}
+				//each rules
+				for (i = l - 1; i > -1; i -= 1){
+					ruleName = fields[n].rule[i];
+					defaultValue = fields[n].defaultValue;
+					value = fields[n].handle.value;
+					
 
-					if ('' === value) {
-						message = this.settings.messages[this.settings.locale][ruleName].empty;
-					} else {
-						message = this.settings.messages[this.settings.locale][ruleName].incorrect;
-					}
+					if (!(value === '' && !fields[n].rule.join('|').match(/\|{0,1}required\|{0,1}/))) {
 
-					this.errors[n] = {
-						name: fields[n].name,
-						errorText: message,
-						helper: this.settings.messages[this.settings.locale][ruleName].helper
-					}
+						if (ruleName.match(/-/gi)) {
+							params = ruleName.split('-');
+							ruleName = params[0];
+							params = params.splice(1);
+						}
 
-					if (!this.submitCallback) {
-						this.errors[n].handle = fields[n].handle;
+						if (defaultValue && value !== defaultValue) {
+							
+							result = false;
+							
+							try {
+								message = this.settings.messages[this.settings.locale][ruleName].incorrect;
+							} catch (e) {
+								message = this.settings.messages[this.settings.locale]['required'].incorrect;
+							}
+							
+
+						} else if (this.rules[ruleName] && !this.rules[ruleName](value, params)) {
+
+							//set message to empty data
+							if ('' === value) {
+								result = false;
+								try {
+									message = this.settings.messages[this.settings.locale][ruleName].empty;
+								} catch (e) {
+									message = this.settings.messages[this.settings.locale]['required'].empty;
+								}
+								
+
+							//set message to incorrect data
+							} else {
+								result = false;
+								try {
+									message = this.settings.messages[this.settings.locale][ruleName].incorrect;
+								} catch (e) {
+									message = this.settings.messages[this.settings.locale]['required'].incorrect;
+								}
+							}
+						}
+
+						if (!result) {
+							
+							//define errors stack if not exist
+							if (!this.errors) {
+								this.errors = {};
+							}
+
+							//append error to stack
+							try {
+								helper = this.settings.messages[this.settings.locale][ruleName].helper;
+							} catch (e) {
+								helper = this.settings.messages[this.settings.locale]['required'].helper;
+							}
+
+							this.errors[n] = {
+								name: fields[n].name,
+								errorText: this.formatString(message, params),
+								helper: this.formatString(helper, params)
+							}
+
+							//call callback if exist
+							if (!this.submitCallback) {
+								this.errors[n].handle = fields[n].handle;
+							}
+						}
 					}
 				}
 			}
@@ -233,7 +370,7 @@
 				return (this.errors) ? this.errors : true;
 			}
 		},
-		hideErrors: function (validationField) {
+		hideErrors: function (validationField, notClass, notHelpers) {
 			var n,
 				errorDiv,
 				helperDiv;
@@ -245,18 +382,22 @@
 					errorDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-error"]');
 					helperDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-helper"]');
 
-					if (errorDiv) {
+					if (!notClass) {
 						this.fields[n].handle.classList.remove('error');
+					}
+
+					if (errorDiv) {
 						errorDiv.parentNode.removeChild(errorDiv);
 					}
 
-					if (helperDiv) {
+					if (helperDiv && !notHelpers) {
 						helperDiv.parentNode.removeChild(helperDiv);
 					}			
 				}
 			}
 		},
 		showErrors: function (validationField) {
+
 			var n,
 				errorDiv,
 				se = this.settings.showErrors,
@@ -298,6 +439,20 @@
 					insertNodeError(this.fields[n].handle, this.errors[n]);
 				}
 			}
+
+			if (this.settings.autoHideErrors) {
+				
+				if (this.intervalID) {
+					clearInterval(this.intervalID);
+				}
+
+				this.intervalID = setTimeout((function () {
+					this.intervalID = null;
+					this.hideErrors(validationField, true, !this.settings.autoHideHelpers);
+				}).bind(this), this.settings.autoHideErrorsTimeout);
+				
+			}
+
 		},
 		init: function (formHandle, submitCallback, settings) {
 			
@@ -346,16 +501,17 @@
 		},
 		events: {
 			submit: function (e) {
+
 				e.preventDefault();
 
 				//validate
-				var res = this.validate();
+				var validateResult = this.validate();
 
 				//hide errors
 				this.hideErrors();
 
 				//show errors
-				if (!res) {
+				if (!validateResult) {
 					
 					this.showErrors();
 				}
@@ -389,14 +545,21 @@
 			for (i = 0; i < l; i += 1) {
 				retData[i] = {
 					name: fields[i].getAttribute('name'),
-					rule: fields[i].getAttribute('data-rule'),
+					rule: fields[i].getAttribute('data-rule').split('|'),
+					defaultValue: fields[i].getAttribute('data-default'),
 					handle: fields[i]
 				}
 			}
 
 			return retData;
+		},
+		formatString: function (format) {
+			var args = Array.prototype.slice.call(arguments, 1);
+			args = args[0];
+			return format.replace(/{(\d+)}/g, function(match, number) { 
+				return typeof args[number] != 'undefined' ? args[number] : match;
+			});
 		}
-			
 	}
 
 

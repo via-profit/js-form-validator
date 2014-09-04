@@ -46,7 +46,7 @@
 	<form name="test-form">
 		
 		<p>
-			<input type="text" name="name" data-rule="name" placeholder="name" />
+			<input type="text" name="name" data-rule="name" placeholder="name" data-default="Ivan" value="Ivan"/>
 		</p>
 
 		<p>
@@ -54,7 +54,21 @@
 		</p>
 
 		<p>
-			<select name="colors" multiple="multiple" data-rule="notzero">
+			<input type="text" name="age2" data-rule="required|float|between-5-8" placeholder="between-5-8 float" />
+		</p>
+
+		<p>
+			<input type="text" name="age" data-rule="required|integer|between-5-8" placeholder="between-5-8" />
+		</p>
+
+		<p>
+			<input type="text" name="amount" data-rule="required|integer|min-5" placeholder="min-5" />
+		</p>
+
+		<p>
+			<label>Select the Green color</label><br/>
+
+			<select name="colors" multiple="multiple" data-rule="notzero-Green" data-default="2">
 				<option value="1">Red</option>
 				<option value="2">Green</option>
 				<option value="3">Yellow</option>
@@ -70,7 +84,7 @@
 		</p>
 
 		<p>
-			<input type="text" name="phone" data-rule="phone" placeholder="phone" />
+			<input type="text" name="phone" data-rule="phone|required" placeholder="phone" />
 		</p>
 
 		<p>
