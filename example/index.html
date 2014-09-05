@@ -19,7 +19,17 @@
 				console.log('SUBMIT SUCCESS');
 
 				return false;
-			});
+			}, {
+				/*messages: {
+					ru: {
+						required: {
+							empty: 'Why is empty?',
+							incorrect: 'Ooops',
+							helper: 'Need help?'
+						}
+					}
+				}*/
+		});
 
 			var validator2 = new Validator(document.querySelector('form[name="test-form2"]'), function (err, res) {
 				
@@ -31,6 +41,14 @@
 				console.log('SUBMIT2 SUCCESS2');
 
 				return false;
+			}, {
+				messages: {
+					ru: {
+						name: {
+							incorrect: 'ERROR'
+						}
+					}
+				}
 			});
 
 
@@ -45,53 +63,117 @@
 
 	<form name="test-form">
 		
-		<p>
-			<input type="text" name="name" data-rule="name" placeholder="name" data-default="Ivan" value="Ivan"/>
-		</p>
+	
+		<div class="table">
+			
+			<div class="col">
+				<div class="row">
+					<input type="text" name="name" data-rule="name" placeholder="name" data-default="Ivan" value="Ivan"/>
+				</div>
 
-		<p>
-			<input type="text" name="lastname" data-rule="lastname" placeholder="lastname" />
-		</p>
+				<div class="row">
+					<input type="text" name="lastname" data-rule="lastname" placeholder="lastname" />
+				</div>
+				<div class="row">
+					<input type="text" name="age2" data-rule="required|float|between-5-8" placeholder="between-5.0-8.0 float" />
+				</div>
+				<div class="row">
+					<input type="text" name="age" data-rule="required|integer|between-5-8" placeholder="between-5-8" />
+				</div>
+				<div class="row">
+					
+				</div>
+				<div class="row">
+					<input type="text" name="amount" data-rule="required|integer|min-5" placeholder="min-5" />
+				</div>
+				<div class="row">
 
-		<p>
-			<input type="text" name="age2" data-rule="required|float|between-5-8" placeholder="between-5-8 float" />
-		</p>
+					<label>
+						Shadows
+						<input type="checkbox" name="Shadows" data-rule="required" value="1"/>
+					</label>
+				</div>
+				<div class="row">
 
-		<p>
-			<input type="text" name="age" data-rule="required|integer|between-5-8" placeholder="between-5-8" />
-		</p>
+				</div>
+			</div>
 
-		<p>
-			<input type="text" name="amount" data-rule="required|integer|min-5" placeholder="min-5" />
-		</p>
 
-		<p>
-			<label>Select the Green color</label><br/>
+			<div class="col">
+				<div class="row">
+					<label>Select the Green color</label><br/>
 
-			<select name="colors" multiple="multiple" data-rule="notzero-Green" data-default="2">
-				<option value="1">Red</option>
-				<option value="2">Green</option>
-				<option value="3">Yellow</option>
-			</select>
-		</p>
+					<select name="colors" multiple="multiple" data-rule="notzero-Green" data-default="2">
+						<option value="1">Red</option>
+						<option value="2">Green</option>
+						<option value="3">Yellow</option>
+					</select>
+				</div>
+				<div class="row">
+					<select name="city" data-rule="notzero">
+						<option value="0">- Choose -</option>
+						<option value="1">Yekaterinburg</option>
+						<option value="2">Moscow</option>
+					</select>
+				</div>
+				<div class="row">
+					<input type="text" name="phone" data-rule="phone|required" placeholder="phone" />
+				</div>
+				<div class="row">
+					<input type="text" name="email" data-rule="email" placeholder="email" />
+				</div>
+				<div class="row">
+					<label>
+						100
+						<input type="radio" name="speed" data-rule="required" value="100"/>
+					</label>
+					&nbsp;&nbsp;
+					<label>
+						200
+						<input type="radio" name="speed" data-rule="required" value="200"/>
+					</label>
+					&nbsp;&nbsp;
+					<label>
+						300
+						<input type="radio" name="speed" data-rule="required" value="300"/>
+					</label>
+				</div>
+				<div class="row">
+					<label>
+						12.06
+						<input type="radio" name="data" data-rule="required" value="12.06"/>
+					</label>
+					&nbsp;&nbsp;
+					<label>
+						12.04
+						<input type="radio" name="data" data-rule="required" value="12.04"/>
+					</label>
+					&nbsp;&nbsp;
+					<label>
+						12.02
+						<input type="radio" name="data" data-rule="required" value="12.02"/>
+					</label>	
+				</div>
+				<div class="row">
+					<label>
+						Lights
+						<input type="checkbox" name="light" data-rule="required" value="1"/>
+					</label>
+				</div>
 
-		<p>
-			<select name="city" data-rule="notzero">
-				<option value="0">- Choose -</option>
-				<option value="1">Yekaterinburg</option>
-				<option value="2">Moscow</option>
-			</select>
-		</p>
+				<div class="row">
 
-		<p>
-			<input type="text" name="phone" data-rule="phone|required" placeholder="phone" />
-		</p>
+				</div>
+			</div>
 
-		<p>
-			<input type="text" name="email" data-rule="email" placeholder="email" />
-		</p>
+			
+			<div style="display: table-row">
+				<input type="submit" value="Submit"/>
+			</div>
 
-		<input type="submit" value="Submit"/>
+
+		</div>
+
 
 	</form>
 
