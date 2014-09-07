@@ -13,7 +13,8 @@
             showErrors: true,
             showHelpers: true,
             locale: 'ru',
-            messages: {}
+            messages: {},
+            rules: {}
         };
 
 
@@ -154,8 +155,20 @@
         //get fields and rules
         this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
 
-        //settings
+        //apply custom settings
         if (settings) {
+
+            if (settings.rules) {
+                for (n in settings.rules) {
+                    if (settings.rules.hasOwnProperty(n)) {
+                        this.rules[n] = settings.rules[n];
+                    }
+                }
+                delete settings.rules;
+            }
+
+
+            //apply other settings
             for (n in settings) {
                 if (settings.hasOwnProperty(n)) {
                     this.settings[n] = settings[n];
@@ -170,7 +183,7 @@
 
             if (this.settings.onAir) {
                 for (n in this.fields) {
-                	if (this.fields.hasOunProperty(n)) {
+                    if (this.fields.hasOwnProperty(n)) {
                         for (i = 0; i < eventListLength; i += 1) {
                             this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
                         }
@@ -210,37 +223,35 @@
             min: function (value, params) {
                 if (this.float(value)) {
                     return parseFloat(value) >= parseFloat(params[0]);
-                } else {
-                    return parseInt(value, 10) >= parseInt(params[0], 10);
                 }
+                return parseInt(value, 10) >= parseInt(params[0], 10);
             },
             max: function (value, params) {
                 if (this.float(value)) {
                     return parseFloat(value) <= parseFloat(params[0]);
-                } else {
-                    return parseInt(value, 10) <= parseInt(params[0], 10);
                 }
+                return parseInt(value, 10) <= parseInt(params[0], 10);
             },
             between: function (value, params) {
                 if (this.float(value)) {
                     return parseFloat(value) >= parseFloat(params[0]) && parseFloat(value) <= parseFloat(params[1]);
-                } else if (this.integer(value)){
-                    return parseInt(value, 10) >= parseInt(params[0], 10) && parseInt(value, 10) <= parseInt(params[1], 10);
-                } else {
-                    return false;
                 }
+                if (this.integer(value)) {
+                    return parseInt(value, 10) >= parseInt(params[0], 10) && parseInt(value, 10) <= parseInt(params[1], 10);
+                }
+                return false;
             },
             name: function (value) {
                 if (value.length > 0 && value.length < 2) {
                     return false;
                 }
-                return new RegExp(/^[a-zA-Z\sа-яА-ЯёЁ-]+$/g).test(value);
+                return new RegExp(/^[a-zA-Z\sа-яА-ЯёЁ\-]+$/g).test(value);
             },
             lastname: function (value) {
                 return this.name(value);
             },
             phone: function (value) {
-                if ( value.replace(/[^0-9]+/gi, '').length < 6 ) {
+                if (value.match(/[0-9]+/gi) && value.match(/[0-9]+/gi)[0].length < 6) {
                     return false;
                 }
                 return new RegExp(/^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/g).test(value);
@@ -258,16 +269,18 @@
             var ret = {},
                 n;
 
-            for (n in  this.fields) {
-                if (this.fields[n].handle[attrName] && this.fields[n].handle[attrName] === attrValue) {
-                    ret[n] = this.fields[n];
+            for (n in this.fields) {
+                if (this.fields.hasOwnProperty(n)) {
+                    if (this.fields[n].handle[attrName] && this.fields[n].handle[attrName] === attrValue) {
+                        ret[n] = this.fields[n];
+                    }
                 }
             }
 
             return ret;
         },
         validate: function (validationField) {
-            
+
             if (this.errors) {
                 this.errors = null;
             }
@@ -282,9 +295,8 @@
                 message,
                 messageType = null,
                 helper,
-                params = [],
+                params,
                 fields = this.fields;
-
 
             if (validationField) {
                 fields = this.getFields([validationField]);
@@ -293,14 +305,14 @@
             //each fields
             for (n in  fields) {
                 result = true;
-                l = fields[n].rule.length;
+                l = fields[n].rules.length;
 
-
-                //each rules
+                 //each rules
                 //for (i = l - 1; i > -1; i -= 1){
-                for (i = 0; i < l; i += 1){
+                for (i = 0; i < l; i += 1) {
 
-                    ruleName = fields[n].rule[i];
+                    ruleName = fields[n].rules[i][0];
+                    params = fields[n].rules[i][1];
                     defaultValue = fields[n].defaultValue;
                     value = fields[n].handle.value;
 
@@ -347,14 +359,7 @@
                         }
                     }
 
-
-                    if (result && !(value === '' && !fields[n].rule.join('|').match(/\|{0,1}required\|{0,1}/))) {
-
-                        if (ruleName.match(/-/gi)) {
-                            params = ruleName.split('-');
-                            ruleName = params[0];
-                            params = params.splice(1);
-                        }
+                    if (result && !(value === '' && !fields[n].rules.join('|').match(/\|{0,1}required\|{0,1}/))) {
 
                         //if exist default value and value is eq default
                         if (result && defaultValue && value !== defaultValue) {
@@ -386,16 +391,24 @@
 
                             //append error messages
                             try {
-                                message = this.settings.messages[this.settings.locale][ruleName][messageType];
+                                try {
+                                    message = this.settings.messages[this.settings.locale][ruleName][messageType];
+                                } catch (e) {
+                                    message = this.messages[this.settings.locale][ruleName][messageType];
+                                }
                             } catch (e) {
-                                message = this.messages[this.settings.locale][ruleName][messageType];
+                                message = this.messages[this.settings.locale]['required'][messageType];
                             }
 
                             //append helpers to stack
                             try {
-                                helper = this.settings.messages[this.settings.locale][ruleName].helper;
+                                try {
+                                    helper = this.settings.messages[this.settings.locale][ruleName].helper;
+                                } catch (e) {
+                                    helper = this.messages[this.settings.locale][ruleName].helper;
+                                }
                             } catch (e) {
-                                helper = this.messages[this.settings.locale][ruleName].helper;
+                                helper = this.messages[this.settings.locale]['required'].helper;
                             }
 
                             //add error
@@ -591,24 +604,47 @@
         getFields: function (fields) {
 
             var retData = {},
-                l = fields.length,
-                i;
+                rules = [],
+                params = [],
+                fieldsLength = fields.length,
+                fieldIndex,
+                ruleIndex,
+                rulesLength;
 
-            for (i = 0; i < l; i += 1) {
-                retData[i] = {
-                    name: fields[i].getAttribute('name'),
-                    rule: fields[i].getAttribute('data-rule').split('|'),
-                    defaultValue: fields[i].getAttribute('data-default'),
-                    handle: fields[i]
+            for (fieldIndex = 0; fieldIndex < fieldsLength; fieldIndex += 1) {
+
+                rules = fields[fieldIndex].getAttribute('data-rule').split('|');
+
+                rulesLength = rules.length;
+                for (ruleIndex = 0; ruleIndex < rulesLength; ruleIndex += 1) {
+                    if (rules[ruleIndex].match(/-/gi)) {
+                        params = rules[ruleIndex].split('-');
+                        rules[ruleIndex] = params[0];
+                        params = params.splice(1);
+                        rules[ruleIndex] = [rules[ruleIndex], params];
+                    } else {
+                        rules[ruleIndex] = [rules[ruleIndex], []];
+                    }
+                }
+
+                retData[fieldIndex] = {
+                    name: fields[fieldIndex].getAttribute('name'),
+                    rules: rules,
+                    defaultValue: fields[fieldIndex].getAttribute('data-default'),
+                    handle: fields[fieldIndex]
                 }
             }
             return retData;
         },
         formatString: function (format) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            args = args[0];
-            return format.replace(/{(\d+)}/g, function(match, number) { 
-                return typeof args[number] != 'undefined' ? args[number] : match;
+            var args = [arguments[1]][0];
+
+            if (!args.length) {
+                return arguments[0];
+            }
+
+            return format.replace(/{(\d+)}/gi, function(match, number) { 
+                return typeof args[number] != 'undefined' ? args[number] : ''/*match*/;
             });
         }
     }

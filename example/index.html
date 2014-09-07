@@ -41,12 +41,23 @@
 				console.log('SUBMIT2 SUCCESS2');
 
 				return false;
-			}, {
-				messages: {
-					ru: {
-						name: {
-							incorrect: 'ERROR'
-						}
+			});
+
+
+			var validator3 = new Validator(document.querySelector('form[name="single-form"]'), function (err, res) {
+				
+				if (err) {
+					console.log('ERROR2', err);
+					return false;
+				}
+
+				console.log('SUBMIT2 SUCCESS2');
+
+				return false;
+
+			}, {rules: {
+					customrule: function (value, params) {
+						return new RegExp(/^Yellow$/gi).test(value);
 					}
 				}
 			});
@@ -59,7 +70,21 @@
 	</script>
 </head>
 <body>
-	
+		
+	<form name ="single-form">
+		
+		<select name="colors" multiple="multiple" data-rule="customrule">
+			<option value="Red">Red</option>
+			<option value="Green">Green</option>
+			<option value="Yellow">Yellow</option>
+		</select>
+
+		<input type="text" value="" name="te" data-rule="required|customrule"/>
+
+		<input type="submit" value="Submit"/>
+	</form>
+
+
 
 	<form name="test-form">
 		
@@ -109,6 +134,7 @@
 						<option value="3">Yellow</option>
 					</select>
 				</div>
+
 				<div class="row">
 					<select name="city" data-rule="notzero">
 						<option value="0">- Choose -</option>
