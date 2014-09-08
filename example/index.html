@@ -32,15 +32,7 @@
 		});
 
 			var validator2 = new Validator(document.querySelector('form[name="test-form2"]'), function (err, res) {
-				
-				if (err) {
-					console.log('ERROR2', err);
-					return false;
-				}
-
-				console.log('SUBMIT2 SUCCESS2');
-
-				return false;
+				return res;
 			});
 
 

@@ -576,14 +576,15 @@
 
                 //show errors
                 if (!validateResult) {
-                    
                     this.showErrors();
                 }
 
                 //callback
-                this.submitCallback((this.errors) ? this.errors : null, (this.errors) ? false : true);
+                var callbackResult = this.submitCallback((this.errors) ? this.errors : null, (this.errors) ? false : true);
 
-                return false;    
+                if (callbackResult === true) {
+                    this.formHandle.submit();
+                }
             },
             change: function (e) {
 
