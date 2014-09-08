@@ -4,7 +4,7 @@ JS form validator
 
 How to use
 -------------
-
+```javascript
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
 
@@ -12,7 +12,7 @@ How to use
 	validator = new Validator(formHandle, function (res) {
 		return res;
 	}
-
+```
 **Description for this:**
 You need to create an instance of **Validator** and pass it two parameters:
  1. Form handle
