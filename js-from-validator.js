@@ -6,15 +6,15 @@
 
         this.settings = {
             onAir: true,
-            removeSpaces: false,
-            autoHideHelpers: true,
+            showErrors: true,
             autoHideErrors: true,
             autoHideErrorsTimeout: 2000,
-            showErrors: true,
-            showHelpers: true,
-            locale: 'ru',
+            showHelpers: false,
+            autoHideHelpers: true,
+            locale: 'en',
             messages: {},
-            rules: {}
+            rules: {},
+            removeSpaces: false;
         };
 
 
