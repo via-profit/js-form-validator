@@ -117,12 +117,15 @@ Rules
 ====
 
 For the attaching of the rules, you have to add the attribute **data-rule** to the form element, and as value is **rule name**
+
 *data-rule="phone"*
 
 For a form element, you can use a few rules that are listed through the separator "**|**"
+
 *data-rule="phone|required"*
 
 Some rules may have parameters. The parameters must be separated by the symbol "**-**"
+
 *data-rule="between-5-9"*
 
 List of rules:
