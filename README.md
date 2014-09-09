@@ -9,8 +9,7 @@ How to use
 	new Validator(formHandle, [callback], [settings]);
 ```
 
-**Example**
-*Your HTML*
+**In HTML**
 ```html    
 	<!DOCTYPE html>
 	<html lang="en">
@@ -42,7 +41,7 @@ How to use
 
 	</html>
 ```
-*Your Javascript*
+*In Javascript*
 ```javascript
 
 	//Notice: run this code after the DOM loaded!
