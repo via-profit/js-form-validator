@@ -10,18 +10,43 @@ How to use
 ```
 
 **Example**
-*your HTML code*
+*Your HTML*
 ```html    
-	<form name="example-form">
-		
-		<input type="text" name="phone" data-rule="required|phone"/>
-		
-		<input type="submit" value="Submit"/>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>My title</title>
 
-	</form>
+		<!-- Append the validator JS script -->
+		<script type="text/javascript" src="js-form-validator.js"></script>
+	</head>
+
+	<body>
+		
+		<!-- Your form -->
+		<form name="example-form">
+			
+			<!-- Required field phone -->
+			<input type="text" name="phone" data-rule="required|phone"/>
+
+			<!-- Required field email -->
+			<input type="text" name="phone" data-rule="required|email"/>
+
+			<!-- Submit button -->
+			<input type="submit" value="Submit"/>
+
+		</form>
+
+	</body>
+
+	</html>
 ```
-*Your Javascript code*
-```javascript    
+*Your Javascript*
+```javascript
+
+	//Notice: run this code after the DOM loaded!
+
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
 
