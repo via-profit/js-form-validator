@@ -82,8 +82,6 @@ Settings
 | showErrors            | Boolean | true    | Show validation errors                                                      |
 | autoHideErrors        | Boolean | true    | Auto-hide the error messages                                                |
 | autoHideErrorsTimeout | Integer | 2000    | Timeout auto-hide error messages                                            |
-| showHelpers           | Boolean | false   | Show validation help messages                                               |
-| autoHideHelpers       | Boolean | true    | Auto-hide the help messages                                                 |
 | locale*                | String  | 'en'    | Language error messages                                                    |
 | messages**             | Object  | {}      | Object for custom error messages                                            |
 | rules***                 | Object  | {}      | Object for custom rules                   
@@ -97,13 +95,11 @@ Settings
 		localeName: {
 			RuleName1: {
 				empty: 'Message text for empty value',
-				incorrect: 'Message text for incorrect value',
-				helper: 'Helper message text'
+				incorrect: 'Message text for incorrect value'
 			},
 			RuleName2: {
 				empty: 'Message text for empty value',
-				incorrect: 'Message text for incorrect value',
-				helper: 'Helper message text'
+				incorrect: 'Message text for incorrect value'
 			}
 			//..
 		}

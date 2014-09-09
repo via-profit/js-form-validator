@@ -9,8 +9,6 @@
             showErrors: true,
             autoHideErrors: true,
             autoHideErrorsTimeout: 2000,
-            showHelpers: false,
-            autoHideHelpers: true,
             locale: 'en',
             messages: {},
             rules: {},
@@ -22,115 +20,47 @@
             en: {
                 required: {
                     empty: 'Place value',
-                    incorrect: 'Incorrect value',
-                    helper: 'Use the all symbols'
+                    incorrect: 'Incorrect value'
                 },
                 notzero: {
                     empty: 'Select this',
-                    incorrect: 'Incorrect value',
-                    helper: 'Just select'
+                    incorrect: 'Incorrect value'
                 },
                 integer: {
                     empty: 'Enter an integer',
-                    incorrect: 'Incorrect integer',
-                    helper: 'Example, 125'
+                    incorrect: 'Incorrect integer'
                 },
                 float: {
                     empty: 'Enter an float number',
-                    incorrect: 'Incorrect float',
-                    helper: 'Example, 12.00'
+                    incorrect: 'Incorrect float'
                 },
                 min: {
                     empty: 'Enter more',
-                    incorrect: 'Enter more',
-                    helper: 'Enter more'
+                    incorrect: 'Enter more'
                 },
                 max: {
                     empty: 'Enter less',
-                    incorrect: 'Enter less',
-                    helper: 'Enter less'
+                    incorrect: 'Enter less'
                 },
                 between: {
                     empty: 'Enter the between',
-                    incorrect: 'Enter the between',
-                    helper: 'Enter the between'
+                    incorrect: 'Enter the between'
                 },
                 name: {
                     empty: 'Please, enter your name',
-                    incorrect: 'Incorrect name',
-                    helper: 'Use the alphabet and spaces'
+                    incorrect: 'Incorrect name'
                 },
                 lastname: {
                     empty: 'Please, enter your lastname',
-                    incorrect: 'Incorrect lastname',
-                    helper: 'Use the alphabet and spaces'
+                    incorrect: 'Incorrect lastname'
                 },
                 phone: {
                     empty: 'Please, enter the phone number',
-                    incorrect: 'Incorrect phone number',
-                    helper: 'Use the digits, spaces and symbols "-", "_", "()"'
+                    incorrect: 'Incorrect phone number'
                 },
                 email: {
                     empty: 'Please, enter your email address',
-                    incorrect: 'Incorrect email address',
-                    helper: 'Use your realy email address'
-                }
-            },
-            ru: {
-                required: {
-                    empty: 'Не оставляйте это поле пустым',
-                    incorrect: 'Недопустимое значение',
-                    helper: 'Любые символы'
-                },
-                notzero: {
-                    empty: 'Сделайте выбор',
-                    incorrect: 'Выберите {0}',
-                    helper: 'Просто выберите {0}'
-                },
-                integer: {
-                    empty: 'Укажите натуральное число',
-                    incorrect: 'Введенное значение не является натуральным числом',
-                    helper: 'Например, 125'
-                },
-                float: {
-                    empty: 'Укажите число с плавающей точкой',
-                    incorrect: 'Введенное значение не является числом с плавающей точкой',
-                    helper: 'Например, 12.00'
-                },
-                min: {
-                    empty: 'Укажите число не меньше {0}',
-                    incorrect: 'Указанное значение меньше {0}',
-                    helper: 'Укажите значение больше {0}'
-                },
-                max: {
-                    empty: 'Укажите число не более {0}',
-                    incorrect: 'Указанное число больше {0}',
-                    helper: 'Укажите число меньше чем {0}'
-                },
-                between: {
-                    empty: 'Укажите диапозон от {0} до {1}',
-                    incorrect: 'Укажите диапозон от {0} до {1}',
-                    helper: 'Укажите диапозон от {0} до {1}'
-                },
-                name: {
-                    empty: 'Укажите ваше Имя',
-                    incorrect: 'Некорректное имя',
-                    helper: 'Например, Иван'
-                },
-                lastname: {
-                    empty: 'Укажите вашу Фамилию',
-                    incorrect: 'Некорректная фамилия',
-                    helper: 'Например, Иванов'
-                },
-                phone: {
-                    empty: 'Введите номер телефона',
-                    incorrect: 'Некорректный номер',
-                    helper: 'Например +7(618)216-99-55'
-                },
-                email: {
-                    empty: 'Укажите ваш E-mail адрес',
-                    incorrect: 'Некорректный E-mail',
-                    helper: 'Например, email@mail.com'
+                    incorrect: 'Incorrect email address'
                 }
             }
         };
@@ -294,7 +224,6 @@
                 result = true,
                 message,
                 messageType = null,
-                helper,
                 params,
                 fields = this.fields;
 
@@ -345,12 +274,6 @@
                                 } catch (e) {
                                     message = this.messages[this.settings.locale][ruleName].empty;
                                 }
-                                
-                                try {
-                                    helper = this.settings.messages[this.settings.locale][ruleName].helper;
-                                } catch (e) {
-                                    helper = this.messages[this.settings.locale][ruleName].helper;
-                                }
                                 break;
                             }
 
@@ -400,22 +323,10 @@
                                 message = this.messages[this.settings.locale]['required'][messageType];
                             }
 
-                            //append helpers to stack
-                            try {
-                                try {
-                                    helper = this.settings.messages[this.settings.locale][ruleName].helper;
-                                } catch (e) {
-                                    helper = this.messages[this.settings.locale][ruleName].helper;
-                                }
-                            } catch (e) {
-                                helper = this.messages[this.settings.locale]['required'].helper;
-                            }
-
                             //add error
                             this.errors[n] = {
                                 name: fields[n].name,
-                                errorText: this.formatString(message, params),
-                                helper: this.formatString(helper, params)
+                                errorText: this.formatString(message, params)
                             }
 
                             //call callback if exist
@@ -434,29 +345,27 @@
                 return (this.errors) ? this.errors : true;
             }
         },
-        hideErrors: function (validationField, notClass, notHelpers) {
+        hideErrors: function (validationField, notClass) {
             var n,
-                errorDiv,
-                helperDiv;
+                i,
+                l,
+                errorDiv;
 
             for (n in this.fields) {
 
                 if ((validationField && validationField === this.fields[n].handle) || !validationField) {
 
-                    errorDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-error"]');
-                    helperDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-helper"]');
+                    //console.log('try to hide for', this.fields[n].handle);
+                    //errorDiv = this.fields[n].handle.parentNode.querySelector('[data-type="validator-error"]');
+                    errorDiv = this.fields[n].handle.nextElementSibling;
 
                     if (!notClass) {
                         this.fields[n].handle.classList.remove('error');
                     }
 
-                    if (errorDiv) {
+                    if (errorDiv && errorDiv.getAttribute('data-type') == 'validator-error') {
                         errorDiv.parentNode.removeChild(errorDiv);
                     }
-
-                    if (helperDiv && !notHelpers) {
-                        helperDiv.parentNode.removeChild(helperDiv);
-                    }            
                 }
             }
         },
@@ -465,10 +374,14 @@
             var n,
                 errorDiv,
                 se = this.settings.showErrors,
-                sh = this.settings.showHelpers,
                 insertNodeError = function (refNode, errorObj) {
                     
                     refNode.classList.add('error');
+
+                    //return if errors exists
+                    if (refNode.nextElementSibling && refNode.nextElementSibling.getAttribute('data-type') == 'validator-error') {
+                        return;
+                    }
 
                     //error
                     if (se) {
@@ -476,15 +389,6 @@
                         errorDiv.setAttribute('class', 'error');
                         errorDiv.setAttribute('data-type', 'validator-error');
                         errorDiv.innerHTML = errorObj.errorText;
-                        refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
-                    }
-
-                    //helper
-                    if (sh) {
-                        errorDiv = document.createElement('div');
-                        errorDiv.setAttribute('class', 'helper');
-                        errorDiv.setAttribute('data-type', 'validator-helper');
-                        errorDiv.innerHTML = errorObj.helper;
                         refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
                     }
                 }
@@ -512,7 +416,7 @@
 
                 this.intervalID = setTimeout((function () {
                     this.intervalID = null;
-                    this.hideErrors(validationField, true, !this.settings.autoHideHelpers);
+                    this.hideErrors(validationField, true);
                 }).bind(this), this.settings.autoHideErrorsTimeout);
                 
             }

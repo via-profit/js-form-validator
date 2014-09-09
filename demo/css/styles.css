@@ -1,0 +1,44 @@
+body{
+    background: rgb(247, 247, 247);
+	
+}
+
+form{
+    width: 400px;
+    display: block;
+    margin: 50px auto;
+}
+
+.field{
+    margin: 20px 0;
+    position: relative;
+}
+
+.field label{
+    display: block;
+    font-size: 12px;
+    color: gray;
+}
+
+.field input[type="text"]{
+    display: block;
+    padding: 5px;
+    border: 1px solid gray;
+}
+
+.field input[type="text"].error{
+	border: 1px solid rgb(238, 0, 0);
+	color: red;
+}
+
+.field input[type="text"].error:focus{
+	outline: none;
+}
+
+.field div.error{
+	position: absolute;
+	color: rgb(255, 22, 22);
+	margin: -2px 0 0;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+}

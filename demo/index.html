@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My title</title>
+	
+	<!-- js form validator -->
+    <script type="text/javascript" src="../js-form-validator.js"></script>
+
+	<!-- user javascript code -->
+    <script type="text/javascript" src="js/default.js"></script>
+
+	<!-- user styles -->
+    <link rel="stylesheet" href="css/styles.css"/>
+
+</head>
+
+<body>
+
+    <form name="demo-form">
+
+		<div class="field">
+			<label>Enter the valid phone number</label>
+			<input type="text" name="phone" data-rule="required|phone"/>
+		</div>
+
+
+		<div class="field">
+			<label>Enter the valid email address</label>
+			<input type="text" name="email" data-rule="required|email"/>
+		</div>
+
+		<div class="field">
+        	<input type="submit" value="Submit form"/>
+		</div>
+    </form>
+
+</body>
+
+</html>
