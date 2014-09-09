@@ -6,10 +6,10 @@ How to use
 =========
 
 ```javascript    
-	new Validator(formHandle, [callback], [settings]);
+	var validator = new Validator(formHandle, [callback], [settings]);
 ```
 
-**In HTML**
+**In HTML:**
 ```html    
 	<!DOCTYPE html>
 	<html lang="en">
@@ -41,7 +41,7 @@ How to use
 
 	</html>
 ```
-*In Javascript*
+**In Javascript:**
 ```javascript
 
 	//Notice: run this code after the DOM loaded!
