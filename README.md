@@ -154,8 +154,8 @@ Some rules may have parameters. The parameters must be separated by the symbol "
 ```html
 	<input type="text" name="count" data-rule="between-5-9"/>
 ```
-List of rules:
----------------
+List of rules
+-------------
 
 | Name     | Parameters      | Description                                                                          |
 |----------|-----------------|--------------------------------------------------------------------------------------|
@@ -171,13 +171,13 @@ List of rules:
 | max      | numeric         | The value must not be greater than the value specified in the first parameter        |
 | between  | numeric-numeric | The value must be between the values ​​specified in the first and the second parameter |
 
-Custom rules:
--------------
+Custom rules
+------------
 
 ...comming soon
 
 License
-======
+=======
 *The MIT License (MIT)*
 *Copyright (c) 2013 kunano.ru*
 
