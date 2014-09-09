@@ -50,7 +50,7 @@ How to use
     var formHandle = document.querySelector('form[name="example-form"]'),
 
 	//got to validation
-	validator = new Validator(formHandle, function (res) {
+	validator = new Validator(formHandle, function (err, res) {
 		return res;
 	});
 ```
@@ -68,7 +68,7 @@ Callback function has two arguments: **err** and **res**. If the form has a vali
     var formHandle = document.querySelector('form[name="example-form"]'),
 
 	//got to validation
-	validator = new Validator(formHandle, function (res) {
+	validator = new Validator(formHandle, function (err, res) {
 		return res;
 	});
 ```
@@ -125,7 +125,7 @@ How to apply settings
     var formHandle = document.querySelector('form[name="example-form"]'),
 
 	//got to validation
-	validator = new Validator(formHandle, function (res) {
+	validator = new Validator(formHandle, function (err, res) {
 		return res;
 	}, {
 	    onAir: false,
@@ -182,7 +182,7 @@ You can add custom rules.
     var formHandle = document.querySelector('form[name="example-form"]'),
 
 	//got to validation
-	validator = new Validator(formHandle, function (res) {
+	validator = new Validator(formHandle, function (err, res) {
 		return res;
 	}, rules: {
 		myrule: function (value, params) {
