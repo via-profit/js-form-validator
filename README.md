@@ -88,9 +88,9 @@ Settings
 | messages**             | Object  | {}      | Object for custom error messages                                            |
 | rules***                 | Object  | {}      | Object for custom rules                   
 
-***locale** - location index for message object.
+*locale - location index for message object.
 
-***messages** - an object having the structure:
+**messages - an object having the structure:
 
 ```javascript 
     messages: {
@@ -109,7 +109,7 @@ Settings
 		}
 	}
 ```
-*****rules** - an object having the structure:
+***rules - an object having the structure:
 
 ```javascript
     rules: {
@@ -174,6 +174,7 @@ List of rules
 Custom rules
 ------------
 You can add custom rules.
+
 **Notice:** Function should return boolean value
 
 ```html
