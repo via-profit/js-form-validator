@@ -3,15 +3,14 @@ JS form validator
 *Form validation on native javascript*
 
 How to use
--------------
+=========
 
 ```javascript    
 	new Validator(formHandle, [callback], [settings]);
 ```
 
 **Example**
-
-*Your HTML:*
+*your HTML code*
 ```html    
 	<form name="example-form">
 		
@@ -21,8 +20,7 @@ How to use
 
 	</form>
 ```
-
-*Your Javascript code:*
+*Your Javascript code*
 ```javascript    
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
@@ -52,7 +50,7 @@ Callback function has two arguments: **err** and **res**. If the form has a vali
 ```
 
 Settings
-----------
+=======
 
 | Name                  | Type    | Default | Description                                                                 |
 |-----------------------|---------|---------|-----------------------------------------------------------------------------|
@@ -98,7 +96,10 @@ Settings
 		}
 	}
 ```    
-**How to apply settings**
+
+How to apply settings
+-------------------------
+
 ```javascript    
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
@@ -111,6 +112,33 @@ Settings
     	locale: 'ru'
 	});
 ```
+
 Rules
-------
+====
+
+For the attaching of the rules, you have to add the attribute **data-rule** to the form element, and as value is **rule name**
+*data-rule="phone"*
+
+For a form element, you can use a few rules that are listed through the separator "**|**"
+*data-rule="phone|required"*
+
+Some rules may have parameters. The parameters must be separated by the symbol "**-**"
+*data-rule="between-5-9"*
+
+List of rules:
+---------------
+
+| Name     | Parameters      | Description |
+|----------|-----------------|-------------|
+| required |        -        |             |
+| notzero  |        -        |             |
+| integer  |        -        |             |
+| float    |        -        |             |
+| name     |        -        |             |
+| lastname |        -        |             |
+| phone    |        -        |             |
+| email    |        -        |             |
+| min      | numeric         |             |
+| max      | numeric         |             |
+| between  | numeric-numeric |             |
 ...coming soon
