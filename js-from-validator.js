@@ -14,7 +14,7 @@
             locale: 'en',
             messages: {},
             rules: {},
-            removeSpaces: false;
+            removeSpaces: false
         };
 
 
@@ -637,6 +637,7 @@
             }
             return retData;
         },
+        //formatString('string {0} and {1}', ['one', 'two']);
         formatString: function (format) {
             var args = [arguments[1]][0];
 
@@ -663,12 +664,14 @@
             }
         }
 
-        multiplex(Validator.prototype, ['validate'], function(object, member) {
+        multiplex(Validator.prototype, ['validate', 'formatString', 'getFields'], function(object, member) {
             object[member] = function(){
                 var args = arguments;
-                return this.each(function(){
-                    this[member].apply(this,args);
-                });
+                return jsFormValidator[member].apply(this, args);
+                
+                /*return this.each(function(){
+                    this[member].apply(this, args);
+                });*/
             };
         });
 

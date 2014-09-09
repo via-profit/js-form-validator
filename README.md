@@ -6,13 +6,29 @@ How to use
 -------------
 
 ```javascript    
+	new Validator(formHandle, [callback], [settings]);
+```
+
+**Example**
+*your HTML code*
+```html    
+	<form name="example-form">
+		
+		<input type="text" name="phone" data-rule="required|phone"/>
+		
+		<input type="submit" value="Submit"/>
+
+	</form>
+```
+*Your Javascript code*
+```javascript    
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
 
 	//got to validation
 	validator = new Validator(formHandle, function (res) {
 		return res;
-	}
+	});
 ```
 **Description for this:**
 You need to create an instance of **Validator** and pass it two parameters:
@@ -30,7 +46,7 @@ Callback function has two arguments: **err** and **res**. If the form has a vali
 	//got to validation
 	validator = new Validator(formHandle, function (res) {
 		return res;
-	}
+	});
 ```
 
 Settings
@@ -48,7 +64,8 @@ Settings
 | messages**             | Object  | {}      | Object for custom error messages                                            |
 | rules***                 | Object  | {}      | Object for custom rules                   
 
-***locale** - 
+***locale** - location index for message object.
+
 ***messages** - an object having the structure:
 
 ```javascript 
@@ -79,4 +96,19 @@ Settings
 		}
 	}
 ```    
+**How to apply settings**
+```javascript    
+    //get form handle
+    var formHandle = document.querySelector('form[name="example-form"]'),
 
+	//got to validation
+	validator = new Validator(formHandle, function (res) {
+		return res;
+	}, {
+	    onAir: false,
+    	locale: 'ru'
+	});
+```
+Rules
+------
+...coming soon
