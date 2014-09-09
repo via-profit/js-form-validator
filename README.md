@@ -10,7 +10,8 @@ How to use
 ```
 
 **Example**
-*your HTML code*
+
+*Your HTML:*
 ```html    
 	<form name="example-form">
 		
@@ -20,7 +21,8 @@ How to use
 
 	</form>
 ```
-*Your Javascript code*
+
+*Your Javascript code:*
 ```javascript    
     //get form handle
     var formHandle = document.querySelector('form[name="example-form"]'),
