@@ -173,8 +173,28 @@ List of rules
 
 Custom rules
 ------------
+You can add custom rules.
+**Notice:** Function should return boolean value
 
-...comming soon
+```html
+	<input type="text" name="custom" data-rule="myrule-param1-param2"/>
+```
+
+```javascript
+    //get form handle
+    var formHandle = document.querySelector('form[name="example-form"]'),
+
+	//got to validation
+	validator = new Validator(formHandle, function (res) {
+		return res;
+	}, rules: {
+		myrule: function (value, params) {
+			//value - value
+			//params - [param1, param2]
+			//Notice: Function should return boolean value
+		}
+	});
+```
 
 License
 =======
