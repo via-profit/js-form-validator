@@ -54,6 +54,9 @@ How to use
 		return res;
 	});
 ```
+
+[Demo](http://codepen.io/dhs/pen/oxCFp)
+
 **Description for this:**
 You need to create an instance of **Validator** and pass it two parameters:
  1. Form handle
