@@ -157,17 +157,21 @@ Some rules may have parameters. The parameters must be separated by the symbol "
 List of rules:
 ---------------
 
-| Name     | Parameters      | Description |
-|----------|-----------------|-------------|
-| required |        -        |             |
-| notzero  |        -        |             |
-| integer  |        -        |             |
-| float    |        -        |             |
-| name     |        -        |             |
-| lastname |        -        |             |
-| phone    |        -        |             |
-| email    |        -        |             |
-| min      | numeric         |             |
-| max      | numeric         |             |
-| between  | numeric-numeric |             |
-...coming soon
+| Name     | Parameters      | Description                                                                          |
+|----------|-----------------|--------------------------------------------------------------------------------------|
+| required |        -        | Required field                                                                       |
+| notzero  |        -        | The value can not be zero                                                            |
+| integer  |        -        | Value must be an positive integer                                                    |
+| float    |        -        | The value must be a floating point number                                            |
+| name     |        -        | The correct name. Use spaces, letters of the alphabet and the symbol "-"             |
+| lastname |        -        | The correct lastname. Use spaces, letters of the alphabet and the symbol "-"         |
+| phone    |        -        | The correct phone number                                                             |
+| email    |        -        | The correct email address                                                            |
+| min      | numeric         | The value must not be less than the value specified in the first parameter           |
+| max      | numeric         | The value must not be greater than the value specified in the first parameter        |
+| between  | numeric-numeric | The value must be between the values ​​specified in the first and the second parameter |
+
+Custom rules:
+-------------
+
+...commingsoon

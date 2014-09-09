@@ -215,7 +215,7 @@
                 return parseInt(value, 10) > 0;
             },
             integer: function (value) {
-                return !isNaN(parseInt(value, 10));
+                return new RegExp(/^[0-9]+$/gi).test(value);
             },
             float: function (value) {
                 return new RegExp(/^([0-9])+(\.)([0-9]+$)/gi).test(value);
