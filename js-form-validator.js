@@ -2,6 +2,33 @@
 
     "use strict";
 
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+                // closest thing possible to the ECMAScript 5
+                // internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                FNop = function () {
+                    return;
+                },
+                fBound = function () {
+                    return fToBind.apply(this instanceof FNop && oThis
+                         ? this
+                         : oThis,
+                         aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+
+            FNop.prototype = this.prototype;
+            fBound.prototype = new FNop();
+
+            return fBound;
+        };
+    }
+
     var JsFormValidator = function (formHandle, submitCallback, settings) {
 
         this.settings = {
@@ -15,6 +42,7 @@
             removeSpaces: false
         };
 
+        this.errorClassName = 'error';
 
         this.messages = {
             en: {
@@ -109,13 +137,21 @@
         //set submit callback
         if (this.submitCallback) {
 
-            this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+            if (this.formHandle.addEventListener) {
+                this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+            } else {
+                this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
+            }
 
             if (this.settings.onAir) {
                 for (n in this.fields) {
                     if (this.fields.hasOwnProperty(n)) {
                         for (i = 0; i < eventListLength; i += 1) {
-                            this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                            if (this.fields[n].handle.addEventListener) {
+                                this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                            } else {
+                                this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
+                            }
                         }
                     }
                 }
@@ -368,10 +404,28 @@
                 if (this.fields.hasOwnProperty(n)) {
                     if ((validationField && validationField === this.fields[n].handle) || !validationField) {
 
-                        errorDiv = this.fields[n].handle.nextElementSibling;
+                        if (document.getElementsByTagName('head')[0].nextElementSibling) {
 
+                            //for normal browsers
+                            errorDiv = this.fields[n].handle.nextElementSibling;
+                        } else {
+
+                            //for IE
+                            errorDiv = this.fields[n].handle.nextSibling;
+                            if (errorDiv.nodeName === '#text') {
+                                errorDiv = errorDiv.nextSibling;
+                            }
+                        }
+
+                        //remove class error
                         if (!notClass) {
-                            this.fields[n].handle.classList.remove('error');
+                            //for normal browsers
+                            if (this.fields[n].handle.classList) {
+                                this.fields[n].handle.classList.remove(this.errorClassName);
+                            } else {
+                                //for IE
+                                this.fields[n].handle.className = this.fields[n].handle.className.replace(new RegExp('(^|\\b)' + this.errorClassName.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+                            }
                         }
 
                         if (errorDiv && errorDiv.getAttribute('data-type') === 'validator-error') {
@@ -388,11 +442,17 @@
                 errorDiv,
                 self,
                 se = this.settings.showErrors,
+                errorClassName = this.errorClassName,
                 insertNodeError = function (refNode, errorObj) {
 
-                    refNode.classList.add('error');
+                    //add class for normal browsers
+                    if (refNode.classList) {
+                        refNode.classList.add(errorClassName);
+                    } else {
+                        //for IE
+                        refNode.className += ' ' + errorClassName;
+                    }
 
-                    //return if errors exists
                     if (refNode.nextElementSibling && refNode.nextElementSibling.getAttribute('data-type') === 'validator-error') {
                         return;
                     }
@@ -400,7 +460,7 @@
                     //error
                     if (se) {
                         errorDiv = document.createElement('div');
-                        errorDiv.setAttribute('class', 'error');
+                        errorDiv.setAttribute('class', errorClassName);
                         errorDiv.setAttribute('data-type', 'validator-error');
                         errorDiv.innerHTML = errorObj.errorText;
                         refNode.parentNode.insertBefore(errorDiv, refNode.nextSibling);
@@ -473,13 +533,21 @@
             //set submit callback
             if (this.submitCallback) {
 
-                this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+                if (this.formHandle.addEventListener) {
+                    this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+                } else {
+                    this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
+                }
 
                 if (this.settings.onAir) {
                     for (n in this.fields) {
                         if (this.fields.hasOwnProperty(n)) {
                             for (i = 0; i < eventListLength; i += 1) {
-                                this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                                if (this.fields[n].handle.addEventListener) {
+                                    this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                                } else {
+                                    this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
+                                }
                             }
                         }
                     }
@@ -492,8 +560,13 @@
         events: {
             submit: function (e) {
 
-                e.preventDefault();
-
+                if (e.preventDefault) {
+                    //for normal browsers
+                    e.preventDefault();
+                } else {
+                    //for IE
+                    e.returnValue = false;
+                }
                 //validate
                 var validateResult = this.validate(),
                     err,
