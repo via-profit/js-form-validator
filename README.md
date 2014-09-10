@@ -83,7 +83,7 @@ Settings
 |-----------------------|---------|---------|-----------------------------------------------------------------------------|
 | onAir                 | Boolean | true    | Validation of a current field after the events of "change", "keyup", "blur" |
 | showErrors            | Boolean | true    | Show validation errors                                                      |
-| autoHideErrors        | Boolean | true    | Auto-hide the error messages                                                |
+| autoHideErrors        | Boolean | false    | Auto-hide the error messages                                                |
 | autoHideErrorsTimeout | Integer | 2000    | Timeout auto-hide error messages                                            |
 | locale*                | String  | 'en'    | Language error messages                                                    |
 | messages**             | Object  | {}      | Object for custom error messages                                            |

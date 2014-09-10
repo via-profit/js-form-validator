@@ -34,7 +34,7 @@
         this.settings = {
             onAir: true,
             showErrors: true,
-            autoHideErrors: true,
+            autoHideErrors: false,
             autoHideErrorsTimeout: 2000,
             locale: 'en',
             messages: {},
@@ -171,7 +171,7 @@
         errors: null,
         fields: {},
         intervalID: null,
-
+        ints: {},
         //rules
         rules: {
             required: function (value) {
@@ -276,8 +276,7 @@
                     result = true;
                     l = fields[n].rules.length;
 
-                     //each rules
-                    //for (i = l - 1; i > -1; i -= 1){
+                    //each rules
                     for (i = 0; i < l; i += 1) {
 
                         ruleName = fields[n].rules[i][0];
@@ -348,7 +347,9 @@
                                 }
                             }
 
-                            if (!result) {
+                            if (result) {
+                                this.hideErrors(fields[n].handle, true);
+                            } else {
 
                                 //define errors stack if not exist
                                 if (!this.errors) {
@@ -396,7 +397,8 @@
             return this.errors || true;
 
         },
-        hideErrors: function (validationField, notClass) {
+        hideErrors: function (validationField, removeClass) {
+
             var n,
                 errorDiv;
 
@@ -418,7 +420,8 @@
                         }
 
                         //remove class error
-                        if (!notClass) {
+                        if (removeClass) {
+
                             //for normal browsers
                             if (this.fields[n].handle.classList) {
                                 this.fields[n].handle.classList.remove(this.errorClassName);
@@ -487,17 +490,34 @@
 
             if (this.settings.autoHideErrors) {
 
-                if (this.intervalID) {
-                    clearInterval(this.intervalID);
-                }
-
                 self = this;
 
-                //set timer
-                this.intervalID = setTimeout(function () {
-                    self.intervalID = null;
-                    self.hideErrors();
-                }, this.settings.autoHideErrorsTimeout);
+                //for all fields
+                if (!validationField) {
+
+                    if (this.intervalID) {
+                        clearInterval(this.intervalID);
+                    }
+
+                    this.intervalID = setTimeout(function () {
+                        self.intervalID = null;
+                        self.hideErrors(false);
+                    }, this.settings.autoHideErrorsTimeout);
+
+                //for current field
+                } else {
+
+                    if (validationField.intervalID) {
+                        clearInterval(validationField.intervalID);
+                    }
+
+                    if (!this.intervalID) {
+                        validationField.intervalID = setTimeout(function () {
+                            validationField.intervalID = null;
+                            self.hideErrors(validationField);
+                        }, this.settings.autoHideErrorsTimeout);
+                    }
+                }
             }
 
         },
@@ -573,7 +593,7 @@
                     res;
 
                 //hide errors
-                this.hideErrors();
+                this.hideErrors(false, true);
 
                 //show errors
                 if (!validateResult) {
@@ -634,7 +654,8 @@
                     name: fields[fieldIndex].getAttribute('name'),
                     rules: rules,
                     defaultValue: fields[fieldIndex].getAttribute('data-default'),
-                    handle: fields[fieldIndex]
+                    handle: fields[fieldIndex],
+                    intervalID: 'nop'
                 };
             }
             return retData;
