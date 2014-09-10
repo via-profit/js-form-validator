@@ -5,7 +5,6 @@ window.addEventListener('load', function () {
 
 	//got to validation
 	validator = new Validator(formHandle, function (err, res) {
-	   	console.log(res);
 	    return res;
 	});
 

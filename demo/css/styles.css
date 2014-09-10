@@ -1,34 +1,57 @@
 body{
-    background: rgb(247, 247, 247);
-	
+    background: rgb(72, 54, 95);
+    margin: 0;
+}
+
+h1{
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    padding: 30px 0 0px 0;
+    margin: 0;
+    text-shadow: 2px 2px 1px #000;
 }
 
 form{
-    width: 400px;
     display: block;
-    margin: 50px auto;
+    margin: 0px auto;
+    background: rgb(43, 43, 43);
+    border-bottom: 1px solid rgb(53, 53, 53);
+    box-shadow: 0 5px 10px -1px rgba(9, 0, 19, 0.63);
 }
 
 .field{
-    margin: 20px 0;
     position: relative;
+    margin: 0 auto 35px auto;
+    width: 380px;
 }
 
 .field label{
     display: block;
     font-size: 12px;
-    color: gray;
+    color: white;
+    padding: 0 10px;
 }
 
 .field input[type="text"]{
     display: block;
-    padding: 5px;
-    border: 1px solid gray;
+    padding: 10px 6px;
+    border: 1px solid rgb(109, 109, 109);
+    border-top-color: #5F5F5F;
+    border-bottom-color: #FFFFFF;
+    width: 347px;
+    margin: 5px auto;
+    color: #464646;
+    background: rgb(244, 244, 244);
+    border-radius: 6px;
+    box-shadow: inset 4px 4px 7px 0 rgba(17, 17, 17, 0.82);
+    outline: none;
 }
 
 .field input[type="text"].error{
-	border: 1px solid rgb(238, 0, 0);
-	color: red;
+	border: 1px solid rgb(255, 0, 0);
+	color: black;
 }
 
 .field input[type="text"].error:focus{
@@ -37,8 +60,45 @@ form{
 
 .field div.error{
 	position: absolute;
-	color: rgb(255, 22, 22);
-	margin: -2px 0 0;
+	color: rgb(255, 62, 62);
+	margin: -2px 0 0 10px;
 	font-size: 14px;
 	letter-spacing: 0.08em;
+}
+
+.field.submit {
+    text-align: right;
+    padding: 0 0 20px 0;
+}
+
+.field input[type="submit"] {
+    box-shadow: inset 0 -20px 20px 0 rgba(0, 0, 0, 0.22), inset 0px 1px 0px 0px #FFFFFF;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    display: inline-block;
+    color: #666666;
+    font-family: arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0px #ffffff;
+    outline: none;
+    position: relative;
+    margin: 0 11px;
+    cursor: pointer;
+}
+
+.field input[type="submit"]:hover{
+    box-shadow: inset 0 -20px 20px 0 rgba(0, 0, 0, 0.3), inset 0px 1px 0px 0px #FFFFFF;
+
+}
+
+.field input[type="submit"]:active{
+    box-shadow: inset 0 3px 13px rgba(0, 0, 0, 0.62), inset 0 20px 23px 0 rgba(0, 0, 0, 0.53), inset 0px 1px 0px 0px #FFFFFF;
+
+    text-shadow: 1px 1px 0px #BBBBBB;
+    color: rgb(59, 59, 59);
+    border-color: rgb(97, 97, 97);
 }
