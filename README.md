@@ -2,6 +2,10 @@ JS form validator
 ==============
 *Form validation on native javascript*
 
+Supported browsers
+================
+![Supported browsers](https://raw.githubusercontent.com/Kunano/js-form-validator/master/browsers.png)
+
 How to use
 =========
 
