@@ -6,6 +6,12 @@ Supported browsers
 ================
 ![Supported browsers](https://raw.githubusercontent.com/Kunano/js-form-validator/master/browsers.png)
 
+ - Opera
+ - Firefox
+ - Chrome
+ - Safari
+ - Internet Explorer 8+
+
 How to use
 =========
 
