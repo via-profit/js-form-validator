@@ -21,27 +21,75 @@ form{
     box-shadow: 0 5px 10px -1px rgba(9, 0, 19, 0.63);
 }
 
+/*fields*/
 .field{
     position: relative;
     margin: 0 auto 35px auto;
-    width: 380px;
+    width: 400px;
+    clear: both;
+}
+
+.field .coll{
+    width: 195px;
+    
+    float: left;
 }
 
 .field label{
     display: block;
     font-size: 12px;
     color: white;
-    padding: 0 10px;
+    padding: 0;
 }
 
-.field input[type="text"]{
+.field label[for]{
+    display: inline-block;
+    font-size: 12px;
+    color: rgb(179, 179, 179);
+    padding: 0;
+    cursor: pointer;
+}
+
+.field label[for]>span{
+    margin: 0px 4px 0 3px;
+    position: relative;
+    top: -6px;
+}
+
+.field label[for]:first-child{
+	margin-left:20px;
+}
+
+.field label[for="agree"]{
+    position: relative;
+    top: 1px;
+    width: 193px;
+    float: left;
+    text-align: right;
+}
+
+.field label i{
+    font-style: normal;
+    color: red;
+    position: relative;
+    top: -2px;
+    left: 1px;
+}
+
+.field.submit {
+    text-align: right;
+    padding: 50px 0 20px 0;
+}
+
+/*text inputs*/
+input[type="text"]{
     display: block;
     padding: 10px 6px;
     border: 1px solid rgb(109, 109, 109);
     border-top-color: #5F5F5F;
     border-bottom-color: #FFFFFF;
-    width: 347px;
-    margin: 5px auto;
+    width: 378px;
+    margin: 5px 0;
     color: #464646;
     background: rgb(244, 244, 244);
     border-radius: 6px;
@@ -49,29 +97,35 @@ form{
     outline: none;
 }
 
-.field input[type="text"].error{
+input:focus,
+select:focus{
+    outline: none;
+}
+
+
+input[type="text"].error,
+select.error{
 	border: 1px solid rgb(255, 0, 0);
 	color: black;
 }
 
-.field input[type="text"].error:focus{
-	outline: none;
-}
-
+/*error messages*/
 .field div.error{
 	position: absolute;
 	color: rgb(255, 62, 62);
-	margin: -2px 0 0 10px;
+	margin: 2px 0 0 0;
 	font-size: 14px;
 	letter-spacing: 0.08em;
+	text-align: inherit;
 }
 
-.field.submit {
-    text-align: right;
-    padding: 0 0 20px 0;
+.field label[for="agree"] div.error{
+    position: relative;
+    margin-top: -2px;
 }
 
-.field input[type="submit"] {
+/*submit button*/
+input[type="submit"] {
     box-shadow: inset 0 -20px 20px 0 rgba(0, 0, 0, 0.22), inset 0px 1px 0px 0px #FFFFFF;
     background-color: #f9f9f9;
     border-radius: 5px;
@@ -90,15 +144,43 @@ form{
     cursor: pointer;
 }
 
-.field input[type="submit"]:hover{
+input[type="submit"]:hover{
     box-shadow: inset 0 -20px 20px 0 rgba(0, 0, 0, 0.3), inset 0px 1px 0px 0px #FFFFFF;
-
 }
 
-.field input[type="submit"]:active{
+input[type="submit"]:active{
     box-shadow: inset 0 3px 13px rgba(0, 0, 0, 0.62), inset 0 20px 23px 0 rgba(0, 0, 0, 0.53), inset 0px 1px 0px 0px #FFFFFF;
-
     text-shadow: 1px 1px 0px #BBBBBB;
     color: rgb(59, 59, 59);
     border-color: rgb(97, 97, 97);
+}
+
+/*radio buttons*/
+input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin: 16px 0 0 0;
+    cursor: pointer;
+}
+
+/*checkbox*/
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+}
+
+/*selectbox*/
+select{
+    position: relative;
+    width: 196px;
+    padding: 4px 6px;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0px -2px 10px -1px #A3A3A3;
+    border: 1px solid gray;
+    cursor: pointer;
+    color: #464646;
 }

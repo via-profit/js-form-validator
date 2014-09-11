@@ -143,14 +143,29 @@
                 this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
             }
 
+            //air mode
             if (this.settings.onAir) {
+
                 for (n in this.fields) {
                     if (this.fields.hasOwnProperty(n)) {
+
+                        //each event list
                         for (i = 0; i < eventListLength; i += 1) {
+
+                            //for normal browsers
                             if (this.fields[n].handle.addEventListener) {
                                 this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
                             } else {
+                                //for IE8
                                 this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
+                                
+                                //emulate onchange event for radio buttons and checkboxes
+                                if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
+                                    this.fields[n].handle.attachEvent('onclick', function (e) {
+                                        e.srcElement.blur();
+                                        e.srcElement.focus();
+                                    });
+                                }
                             }
                         }
                     }
@@ -310,6 +325,7 @@
                                 //add an error to one element
                                 for (index in radioBtns) {
                                     if (radioBtns.hasOwnProperty(index)) {
+
                                         try {
                                             message = this.settings.messages[this.settings.locale][ruleName].empty;
                                         } catch (e) {
@@ -373,7 +389,7 @@
                                     params.push(value);
                                 }
 
-                                //add error
+                                //add errors
                                 this.errors[n] = {
                                     name: fields[n].name,
                                     errorText: this.formatString(message, params)
@@ -470,7 +486,7 @@
                     }
                 };
 
-            for (n in  this.errors) {
+            for (n in this.errors) {
                 if (this.errors.hasOwnProperty(n)) {
                     if (validationField) {
 
@@ -483,7 +499,10 @@
                         }
 
                     } else {
-                        insertNodeError(this.fields[n].handle, this.errors[n]);
+
+                        if (n == 0 || (n > 0 && this.fields[n].name !== this.fields[n - 1].name)) {
+                            insertNodeError(this.fields[n].handle, this.errors[n]);
+                        }
                     }
                 }
             }
@@ -520,7 +539,7 @@
                 }
             }
 
-        },
+        },/*
         init: function (formHandle, submitCallback, settings) {
 
             if (!formHandle) {
@@ -572,11 +591,10 @@
                         }
                     }
                 }
-
             }
 
             return this;
-        },
+        },*/
         events: {
             submit: function (e) {
 
@@ -610,13 +628,33 @@
             },
             change: function (e) {
 
+                //for IE8
+                if (!e.target) {
+                    e.target = e.srcElement;
+                }
+
+
                 //remove spaces
                 if (this.settings.removeSpaces && new RegExp(/\s{2,}/g).test(e.target.value)) {
                     e.target.value = e.target.value.replace(/\s{2,}/g, ' ');
                 }
 
-                //hide errors for this
-                this.hideErrors(e.target);
+                //if is radio buttons
+                if (e.target.type === 'radio') {
+
+                    //get radio groupe
+                    var radioBtns = this.orderFields('name', e.target.name);
+                    for (var n in radioBtns) {
+                        if (radioBtns.hasOwnProperty(n)) {
+                            this.hideErrors(radioBtns[n].handle);
+                        }
+                    }
+
+                } else {
+                    //hide errors for this
+                    this.hideErrors(e.target);                    
+                }
+
 
                 //validate and show errors for this
                 if (!this.validate(e.target)) {
@@ -655,7 +693,7 @@
                     rules: rules,
                     defaultValue: fields[fieldIndex].getAttribute('data-default'),
                     handle: fields[fieldIndex],
-                    intervalID: 'nop'
+                    intervalID: null
                 };
             }
             return retData;
