@@ -71,8 +71,8 @@
                     incorrect: 'Enter less'
                 },
                 between: {
-                    empty: 'Enter the between',
-                    incorrect: 'Enter the between'
+                    empty: 'Enter the between {0}-{1}',
+                    incorrect: 'Enter the between {0}-{1}'
                 },
                 name: {
                     empty: 'Please, enter your name',
@@ -89,6 +89,18 @@
                 email: {
                     empty: 'Please, enter your email address',
                     incorrect: 'Incorrect email address'
+                },
+                length: {
+                    empty: 'Please, Enter a minimum of {0} characters and a maximum of {1}',
+                    incorrect: 'Incorrect. Enter a minimum of {0} characters and a maximum of {1}'
+                },
+                minlength: {
+                    empty: 'Please, enter at least {0} characters',
+                    incorrect: 'You have entered less than {0} characters'
+                },
+                maxlength: {
+                    empty: 'Please, enter at maximum {0} characters',
+                    incorrect: 'You have entered more than {0} characters'
                 }
             }
         };
@@ -260,6 +272,15 @@
             },
             email: function (value) {
                 return new RegExp(/^(("[\w-\s]+")|([\w\-]+(?:\.[\w\-]+)*)|("[\w-\s]+")([\w\-]+(?:\.[\w\-]+)*))(@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i).test(value);
+            },
+            length: function (value, params) {
+                return this.between(value.replace(/\s{2,}/g, ' ').length, params);
+            },
+            maxlength: function (value, params) {
+                return this.max(value.replace(/\s{2,}/g, ' ').length, params);
+            },
+            minlength: function (value, params) {
+                return this.min(value.replace(/\s{2,}/g, ' ').length, params);
             }
         },
         orderFields: function (attrName, attrValue) {
