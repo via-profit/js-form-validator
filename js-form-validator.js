@@ -103,8 +103,12 @@
                     incorrect: 'You have entered more than {0} characters'
                 },
                 maxfilesize: {
-                    empty: 'The size of one or more selected files larger than {0} MB',
-                    incorrect: 'The size of one or more selected files larger than {0} MB'
+                    empty: 'The size of one or more selected files larger than {0} {1}',
+                    incorrect: 'The size of one or more selected files larger than {0} {1}'
+                },
+                fileextension: {
+                    empty: 'Select file',
+                    incorrect: 'One or more files have an invalid type'
                 }
             }
         };
@@ -224,6 +228,7 @@
         fields: {},
         intervalID: null,
         ints: {},
+
         //rules
         rules: {
             required: function (value) {
@@ -288,15 +293,55 @@
             },
             maxfilesize: function (value, params) {
                 var i,
-                    l = value.length;
+                    l = value.length,
+                    unitsOffset = 1;
+
+                switch (params[1].toLowerCase()) {
+                case 'b':
+                    unitsOffset = 1;
+                    break;
+
+                case 'kb':
+                    unitsOffset = 1024;
+                    break;
+
+                case 'mb':
+                    unitsOffset = 1048576;
+                    break;
+
+                case 'gb':
+                    unitsOffset = 1073741824;
+                    break;
+
+                case 'tb':
+                    unitsOffset = 1099511627776;
+                    break;
+                }
 
                 for (i = 0; i < l; i += 1) {
-                    if (parseFloat(value[i]) > (parseFloat(params[0]) * 1024 * 1024)) {
+                    if (parseFloat(value[i]) > (parseFloat(params[0]) * unitsOffset)) {
                         return false;
                     }
                 }
 
                 return true;
+            },
+            fileextension: function (value, params) {
+                var i,
+                    a,
+                    l = params.length,
+                    b = value.length,
+                    cmpResC = 0;
+
+                for (i = 0; i < l; i += 1) {
+                    for (a = 0; a < b; a += 1) {
+                        if (params[i] === value[a].split('.').pop()) {
+                            cmpResC += 1;
+                        }
+                    }
+                }
+
+                return value.length === cmpResC ? true : false;
             }
         },
         orderFields: function (attrName, attrValue) {
@@ -418,7 +463,7 @@
                                             break;
 
                                         case 'fileextension':
-                                            //value.push(fields[n].handle.files[a].name); 
+                                            value.push(fields[n].handle.files[a].name);
                                             break;
                                         }
                                     }
