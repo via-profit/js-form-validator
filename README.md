@@ -166,24 +166,24 @@ Some rules may have parameters. The parameters must be separated by the symbol "
 List of rules
 -------------
 
-| Name          | Parameters      | Example                   |  Description                                                                                              |
-|---------------|-----------------|---------------------------|-----------------------------------------------------------------------------------------------------------|
-| required      |        -        | required                  |Required field                                                                                             |
-| notzero       |        -        | notzero                   |The value can not be zero                                                                                  |
-| integer       |        -        | integer                   |Value must be an positive integer                                                                          |
-| float         |        -        | float                     |The value must be a floating point number                                                                  |
-| name          |        -        | name                      |The correct name. Use spaces, letters of the alphabet and the symbol "-"                                   |
-| lastname      |        -        | lastname                  |The correct lastname. Use spaces, letters of the alphabet and the symbol "-"                               |
-| phone         |        -        | phone                     |The correct phone number                                                                                   |
-| email         |        -        | email                     |The correct email address                                                                                  |
-| min           | numeric         | min-10                    |The value must not be less than the value specified in the first parameter                                 |
-| max           | numeric         | max-34                    |The value must not be greater than the value specified in the first parameter                              |
-| between       | numeric-numeric | between-5-15              |The value must be between the values ​​specified in the first and the second parameter                       |
-| length        | numeric-numeric | length-2-100              |The number of characters value must be between the values ​​specified in the first and the second parameter  |
-| minlength     | numeric         | minlength-8               |The number of characters value must not be less than the value specified in the first parameter            |
-| maxlength     | numeric         | maxlength-50              |The number of characters value must not be greater than the value specified in the first parameter         |
-| maxfilesize   | numeric-units   | maxfilesize-2.5-MB        |The size of one or more selected files must not be greater than the value specified in the first parameter |
-| fileextension | string-[string] | fileextension-jpg-png-gif |Extension of one or more selected files must match one of the values ​​passed in the parameters              |
+| Name          | Parameters      | Example                   | Description                                                                                                |
+|---------------|-----------------|---------------------------|------------------------------------------------------------------------------------------------------------|
+| required      |        -        | required                  | Required field                                                                                             |
+| notzero       |        -        | notzero                   | The value can not be zero                                                                                  |
+| integer       |        -        | integer                   | Value must be an positive integer                                                                          |
+| float         |        -        | float                     | The value must be a floating point number                                                                  |
+| name          |        -        | name                      | The correct name. Use spaces, letters of the alphabet and the symbol "-"                                   |
+| lastname      |        -        | lastname                  | The correct lastname. Use spaces, letters of the alphabet and the symbol "-"                               |
+| phone         |        -        | phone                     | The correct phone number                                                                                   |
+| email         |        -        | email                     | The correct email address                                                                                  |
+| min           | numeric         | min-10                    | The value must not be less than the value specified in the first parameter                                 |
+| max           | numeric         | max-34                    | The value must not be greater than the value specified in the first parameter                              |
+| between       | numeric-numeric | between-5-15              | The value must be between the values ​​specified in the first and the second parameter                       |
+| length        | numeric-numeric | length-2-100              | The number of characters value must be between the values ​​specified in the first and the second parameter  |
+| minlength     | numeric         | minlength-8               | The number of characters value must not be less than the value specified in the first parameter            |
+| maxlength     | numeric         | maxlength-50              | The number of characters value must not be greater than the value specified in the first parameter         |
+| maxfilesize   | numeric-units   | maxfilesize-2.5-MB        | The size of one or more selected files must not be greater than the value specified in the first parameter |
+| fileextension | string-[string] | fileextension-jpg-png-gif | Extension of one or more selected files must match one of the values ​​passed in the parameters              |
 
 Custom rules
 ------------
