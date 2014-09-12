@@ -101,6 +101,8 @@
         var self = this,
             eventList = ['keyup', 'change', 'blur'],
             eventListLength = eventList.length,
+            changeDelayFn,
+            ieOnClickFn,
             n,
             i;
 
@@ -146,6 +148,21 @@
             //air mode
             if (this.settings.onAir) {
 
+                changeDelayFn = function (e) {
+                    if (this.intervalID) {
+                        clearTimeout(this.intervalID);
+                    }
+
+                    this.intervalID = setTimeout(function () {
+                        self.events.change.apply(self, [e]);
+                    }, 400);
+                };
+
+                ieOnClickFn = function (e) {
+                    e.srcElement.blur();
+                    e.srcElement.focus();
+                };
+
                 for (n in this.fields) {
                     if (this.fields.hasOwnProperty(n)) {
 
@@ -154,24 +171,28 @@
 
                             //for normal browsers
                             if (this.fields[n].handle.addEventListener) {
-                                this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+
+                                if (eventList[i] === 'keyup') {
+                                    this.fields[n].handle.addEventListener(eventList[i], changeDelayFn);
+                                } else {
+                                    this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                                }
+
                             } else {
                                 //for IE8
                                 this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
-                                
-                                //emulate onchange event for radio buttons and checkboxes
-                                if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
-                                    this.fields[n].handle.attachEvent('onclick', function (e) {
-                                        e.srcElement.blur();
-                                        e.srcElement.focus();
-                                    });
-                                }
+                            }
+                        }
+
+                        if (!this.fields[n].handle.addEventListener) {
+                            //emulate onchange event for radio buttons and checkboxes
+                            if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
+                                this.fields[n].handle.attachEvent('onclick', ieOnClickFn);
                             }
                         }
                     }
                 }
             }
-
         }
 
         return this;
@@ -499,8 +520,7 @@
                         }
 
                     } else {
-
-                        if (n == 0 || (n > 0 && this.fields[n].name !== this.fields[n - 1].name)) {
+                        if (n === '0' || (n > 0 && this.fields[n].name !== this.fields[n - 1].name)) {
                             insertNodeError(this.fields[n].handle, this.errors[n]);
                         }
                     }
@@ -515,7 +535,7 @@
                 if (!validationField) {
 
                     if (this.intervalID) {
-                        clearInterval(this.intervalID);
+                        clearTimeout(this.intervalID);
                     }
 
                     this.intervalID = setTimeout(function () {
@@ -527,7 +547,7 @@
                 } else {
 
                     if (validationField.intervalID) {
-                        clearInterval(validationField.intervalID);
+                        clearTimeout(validationField.intervalID);
                     }
 
                     if (!this.intervalID) {
@@ -539,62 +559,7 @@
                 }
             }
 
-        },/*
-        init: function (formHandle, submitCallback, settings) {
-
-            if (!formHandle) {
-                return false;
-            }
-
-            var self = this,
-                eventList = ['keyup', 'change', 'blur'],
-                eventListLength = eventList.length,
-                n,
-                i;
-
-            //set handle
-            this.formHandle = formHandle || null;
-
-            //set callback
-            this.submitCallback = submitCallback || null;
-
-            //get fields and rules
-            this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
-
-            if (settings) {
-                for (n in settings) {
-                    if (settings.hasOwnProperty(n)) {
-                        this.settings[n] = settings[n];
-                    }
-                }
-            }
-
-            //set submit callback
-            if (this.submitCallback) {
-
-                if (this.formHandle.addEventListener) {
-                    this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
-                } else {
-                    this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
-                }
-
-                if (this.settings.onAir) {
-                    for (n in this.fields) {
-                        if (this.fields.hasOwnProperty(n)) {
-                            for (i = 0; i < eventListLength; i += 1) {
-                                if (this.fields[n].handle.addEventListener) {
-                                    this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
-                                } else {
-                                    this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return this;
-        },*/
+        },
         events: {
             submit: function (e) {
 
@@ -605,6 +570,7 @@
                     //for IE
                     e.returnValue = false;
                 }
+
                 //validate
                 var validateResult = this.validate(),
                     err,
@@ -627,12 +593,13 @@
                 }
             },
             change: function (e) {
+                var radioBtns,
+                    n;
 
                 //for IE8
                 if (!e.target) {
                     e.target = e.srcElement;
                 }
-
 
                 //remove spaces
                 if (this.settings.removeSpaces && new RegExp(/\s{2,}/g).test(e.target.value)) {
@@ -643,8 +610,8 @@
                 if (e.target.type === 'radio') {
 
                     //get radio groupe
-                    var radioBtns = this.orderFields('name', e.target.name);
-                    for (var n in radioBtns) {
+                    radioBtns = this.orderFields('name', e.target.name);
+                    for (n in radioBtns) {
                         if (radioBtns.hasOwnProperty(n)) {
                             this.hideErrors(radioBtns[n].handle);
                         }
@@ -652,9 +619,8 @@
 
                 } else {
                     //hide errors for this
-                    this.hideErrors(e.target);                    
+                    this.hideErrors(e.target);
                 }
-
 
                 //validate and show errors for this
                 if (!this.validate(e.target)) {
