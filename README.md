@@ -182,6 +182,7 @@ List of rules
 | length      | numeric-numeric | The number of characters value must be between the values ​​specified in the first and the second parameter |
 | minlength   | numeric         | The number of characters value must not be less than the value specified in the first parameter           |
 | maxlength   | numeric         | The number of characters value must not be greater than the value specified in the first parameter        |
+| maxfilesize | numeric         | The size of one or more selected files must not be greater than the value specified in the first parameter|
 
 Custom rules
 ------------

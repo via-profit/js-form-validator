@@ -101,6 +101,10 @@
                 maxlength: {
                     empty: 'Please, enter at maximum {0} characters',
                     incorrect: 'You have entered more than {0} characters'
+                },
+                maxfilesize: {
+                    empty: 'The size of one or more selected files larger than {0} MB',
+                    incorrect: 'The size of one or more selected files larger than {0} MB'
                 }
             }
         };
@@ -281,6 +285,18 @@
             },
             minlength: function (value, params) {
                 return this.min(value.replace(/\s{2,}/g, ' ').length, params);
+            },
+            maxfilesize: function (value, params) {
+                var i,
+                    l = value.length;
+
+                for (i = 0; i < l; i += 1) {
+                    if (parseFloat(value[i]) > (parseFloat(params[0]) * 1024 * 1024)) {
+                        return false;
+                    }
+                }
+
+                return true;
             }
         },
         orderFields: function (attrName, attrValue) {
@@ -311,6 +327,8 @@
             var n,
                 i,
                 l,
+                a,
+                b,
                 ruleName,
                 value,
                 defaultValue,
@@ -379,6 +397,32 @@
 
                                 //set value as for empty rules
                                 value = '';
+                            }
+                        }
+
+                        //if is radio button
+                        if (fields[n].handle.type === 'file') {
+                            if (fields[n].handle.files) {
+                                b = fields[n].handle.files.length;
+
+                                //if the files were selected
+                                if (b > 0) {
+
+                                    value = [];
+                                    for (a = 0; a < b; a += 1) {
+
+                                        switch (ruleName) {
+
+                                        case 'maxfilesize':
+                                            value.push(fields[n].handle.files[a].size);
+                                            break;
+
+                                        case 'fileextension':
+                                            //value.push(fields[n].handle.files[a].name); 
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
 
