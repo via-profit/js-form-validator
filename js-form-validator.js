@@ -735,6 +735,10 @@
                 //validate and show errors for this
                 if (!this.validate(e.target)) {
                     this.showErrors(e.target);
+
+                    if (!this.settings.showErrors) {
+                        this.submitCallback(this.errors, false);
+                    }
                 }
             }
         },
