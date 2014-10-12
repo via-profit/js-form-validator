@@ -782,6 +782,12 @@
             return string.replace(/\{(\d+)\}/gi, function (match, number) {
                 return (match && params[number]) ? params[number] : '';
             });
+        },
+        destroy: function () {
+
+        },
+        reload: function () {
+
         }
     };
 
