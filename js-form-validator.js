@@ -29,197 +29,216 @@
         };
     }
 
-    var JsFormValidator = function (formHandle, submitCallback, settings) {
-
-        this.settings = {
-            onAir: true,
-            showErrors: true,
-            autoHideErrors: false,
-            autoHideErrorsTimeout: 2000,
-            locale: 'en',
-            messages: {},
-            rules: {},
-            removeSpaces: false
-        };
-
-        this.errorClassName = 'error';
-
-        this.messages = {
-            en: {
-                required: {
-                    empty: 'This field is required',
-                    incorrect: 'Incorrect value'
-                },
-                notzero: {
-                    empty: 'Please make a selection',
-                    incorrect: 'Incorrect value'
-                },
-                integer: {
-                    empty: 'Enter an integer value',
-                    incorrect: 'Incorrect integer value'
-                },
-                float: {
-                    empty: 'Enter an float number',
-                    incorrect: 'Incorrect float'
-                },
-                min: {
-                    empty: 'Enter more',
-                    incorrect: 'Enter more'
-                },
-                max: {
-                    empty: 'Enter less',
-                    incorrect: 'Enter less'
-                },
-                between: {
-                    empty: 'Enter the between {0}-{1}',
-                    incorrect: 'Enter the between {0}-{1}'
-                },
-                name: {
-                    empty: 'Please, enter your name',
-                    incorrect: 'Incorrect name'
-                },
-                lastname: {
-                    empty: 'Please, enter your lastname',
-                    incorrect: 'Incorrect lastname'
-                },
-                phone: {
-                    empty: 'Please, enter the phone number',
-                    incorrect: 'Incorrect phone number'
-                },
-                email: {
-                    empty: 'Please, enter your email address',
-                    incorrect: 'Incorrect email address'
-                },
-                length: {
-                    empty: 'Please, Enter a minimum of {0} characters and a maximum of {1}',
-                    incorrect: 'Incorrect. Enter a minimum of {0} characters and a maximum of {1}'
-                },
-                minlength: {
-                    empty: 'Please, enter at least {0} characters',
-                    incorrect: 'You have entered less than {0} characters'
-                },
-                maxlength: {
-                    empty: 'Please, enter at maximum {0} characters',
-                    incorrect: 'You have entered more than {0} characters'
-                },
-                maxfilesize: {
-                    empty: 'The size of one or more selected files larger than {0} {1}',
-                    incorrect: 'The size of one or more selected files larger than {0} {1}'
-                },
-                fileextension: {
-                    empty: 'Select file',
-                    incorrect: 'One or more files have an invalid type'
-                }
-            }
-        };
 
 
-        if (!formHandle) {
-            return false;
-        }
 
-        var self = this,
-            eventList = ['keyup', 'change', 'blur'],
-            eventListLength = eventList.length,
-            changeDelayFn,
-            ieOnClickFn,
-            n,
-            i;
 
-        //set handle
-        this.formHandle = formHandle || null;
 
-        //set callback
-        this.submitCallback = submitCallback || null;
+    //Class params
+    var common = {
+            publicMethods: ['validate', 'formatString', 'destroy', 'reload', 'getHandle', 'getFields'],
+            className: 'Validator'
+        },
 
-        //get fields and rules
-        this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
+        //constructor
+        Protected = function (formHandle, submitCallback, settings) {
 
-        //apply custom settings
-        if (settings) {
+            this.settings = {
+                onAir: true,
+                showErrors: true,
+                autoHideErrors: false,
+                autoHideErrorsTimeout: 2000,
+                locale: 'en',
+                messages: {},
+                rules: {},
+                removeSpaces: false
+            };
 
-            if (settings.rules) {
-                for (n in settings.rules) {
-                    if (settings.rules.hasOwnProperty(n)) {
-                        this.rules[n] = settings.rules[n];
+            this.errorClassName = 'error';
+
+            this.messages = {
+                en: {
+                    required: {
+                        empty: 'This field is required',
+                        incorrect: 'Incorrect value'
+                    },
+                    notzero: {
+                        empty: 'Please make a selection',
+                        incorrect: 'Incorrect value'
+                    },
+                    integer: {
+                        empty: 'Enter an integer value',
+                        incorrect: 'Incorrect integer value'
+                    },
+                    float: {
+                        empty: 'Enter an float number',
+                        incorrect: 'Incorrect float'
+                    },
+                    min: {
+                        empty: 'Enter more',
+                        incorrect: 'Enter more'
+                    },
+                    max: {
+                        empty: 'Enter less',
+                        incorrect: 'Enter less'
+                    },
+                    between: {
+                        empty: 'Enter the between {0}-{1}',
+                        incorrect: 'Enter the between {0}-{1}'
+                    },
+                    name: {
+                        empty: 'Please, enter your name',
+                        incorrect: 'Incorrect name'
+                    },
+                    lastname: {
+                        empty: 'Please, enter your lastname',
+                        incorrect: 'Incorrect lastname'
+                    },
+                    phone: {
+                        empty: 'Please, enter the phone number',
+                        incorrect: 'Incorrect phone number'
+                    },
+                    email: {
+                        empty: 'Please, enter your email address',
+                        incorrect: 'Incorrect email address'
+                    },
+                    length: {
+                        empty: 'Please, Enter a minimum of {0} characters and a maximum of {1}',
+                        incorrect: 'Incorrect. Enter a minimum of {0} characters and a maximum of {1}'
+                    },
+                    minlength: {
+                        empty: 'Please, enter at least {0} characters',
+                        incorrect: 'You have entered less than {0} characters'
+                    },
+                    maxlength: {
+                        empty: 'Please, enter at maximum {0} characters',
+                        incorrect: 'You have entered more than {0} characters'
+                    },
+                    maxfilesize: {
+                        empty: 'The size of one or more selected files larger than {0} {1}',
+                        incorrect: 'The size of one or more selected files larger than {0} {1}'
+                    },
+                    fileextension: {
+                        empty: 'Select file',
+                        incorrect: 'One or more files have an invalid type'
                     }
                 }
-                delete settings.rules;
+            };
+
+
+            if (!formHandle) {
+                return false;
             }
 
+            var self = this,
+                eventList = ['keyup', 'change', 'blur'],
+                eventListLength = eventList.length,
+                changeDelayFn,
+                ieOnClickFn,
+                n,
+                i;
 
-            //apply other settings
-            for (n in settings) {
-                if (settings.hasOwnProperty(n)) {
-                    this.settings[n] = settings[n];
+            //set handle
+            this.formHandle = formHandle || null;
+
+            //set callback
+            this.submitCallback = submitCallback || null;
+
+            //get fields and rules
+            this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
+
+            //apply custom settings
+            if (settings) {
+
+                if (settings.rules) {
+                    for (n in settings.rules) {
+                        if (settings.rules.hasOwnProperty(n)) {
+                            this.rules[n] = settings.rules[n];
+                        }
+                    }
+                    delete settings.rules;
+                }
+
+
+                //apply other settings
+                for (n in settings) {
+                    if (settings.hasOwnProperty(n)) {
+                        this.settings[n] = settings[n];
+                    }
                 }
             }
-        }
 
-        //set submit callback
-        if (this.submitCallback) {
+            //set submit callback
+            if (this.submitCallback) {
 
-            if (this.formHandle.addEventListener) {
-                this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
-            } else {
-                this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
-            }
+                if (this.formHandle.addEventListener) {
+                    this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
+                } else {
+                    this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
+                }
 
-            //air mode
-            if (this.settings.onAir) {
+                //air mode
+                if (this.settings.onAir) {
 
-                changeDelayFn = function (e) {
-                    if (this.intervalID) {
-                        clearTimeout(this.intervalID);
-                    }
+                    changeDelayFn = function (e) {
+                        if (this.intervalID) {
+                            clearTimeout(this.intervalID);
+                        }
 
-                    this.intervalID = setTimeout(function () {
-                        self.events.change.apply(self, [e]);
-                    }, 400);
-                };
+                        this.intervalID = setTimeout(function () {
+                            self.events.change.apply(self, [e]);
+                        }, 400);
+                    };
 
-                ieOnClickFn = function (e) {
-                    e.srcElement.blur();
-                    e.srcElement.focus();
-                };
+                    ieOnClickFn = function (e) {
+                        e.srcElement.blur();
+                        e.srcElement.focus();
+                    };
 
-                for (n in this.fields) {
-                    if (this.fields.hasOwnProperty(n)) {
+                    for (n in this.fields) {
+                        if (this.fields.hasOwnProperty(n)) {
 
-                        //each event list
-                        for (i = 0; i < eventListLength; i += 1) {
+                            //each event list
+                            for (i = 0; i < eventListLength; i += 1) {
 
-                            //for normal browsers
-                            if (this.fields[n].handle.addEventListener) {
+                                //for normal browsers
+                                if (this.fields[n].handle.addEventListener) {
 
-                                if (eventList[i] === 'keyup') {
-                                    this.fields[n].handle.addEventListener(eventList[i], changeDelayFn);
+                                    if (eventList[i] === 'keyup') {
+                                        this.fields[n].handle.addEventListener(eventList[i], changeDelayFn);
+                                    } else {
+                                        this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                                    }
+
                                 } else {
-                                    this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
+                                    //for IE8
+                                    this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
                                 }
-
-                            } else {
-                                //for IE8
-                                this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
                             }
-                        }
 
-                        if (!this.fields[n].handle.addEventListener) {
-                            //emulate onchange event for radio buttons and checkboxes
-                            if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
-                                this.fields[n].handle.attachEvent('onclick', ieOnClickFn);
+                            if (!this.fields[n].handle.addEventListener) {
+                                //emulate onchange event for radio buttons and checkboxes
+                                if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
+                                    this.fields[n].handle.attachEvent('onclick', ieOnClickFn);
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        return this;
-    };
+            return this;
+        };
+
+
+
+
+
+
 
     //main prototype
-    JsFormValidator.prototype = {
+    Protected.prototype = {
+
 
         //service objects
         formHandle: null,
@@ -744,6 +763,8 @@
         },
         getFields: function (fields) {
 
+            fields = fields || this.formHandle.querySelectorAll('[data-rule]');
+
             var retData = {},
                 rules = [],
                 params = [],
@@ -778,38 +799,63 @@
             }
             return retData;
         },
+        getHandle: function () {
+            return this.formHandle;
+        },
         formatString: function (string, params) {
             return string.replace(/\{(\d+)\}/gi, function (match, number) {
                 return (match && params[number]) ? params[number] : '';
             });
         },
         destroy: function () {
+            this.hideErrors(false, true);
 
+            var clone = this.formHandle.cloneNode(true);
+            this.formHandle.parentNode.replaceChild(clone, this.formHandle);
         },
         reload: function () {
 
+            //hide errors
+            this.hideErrors(false, true);
+
+            //clone handle
+            var clone = this.formHandle.cloneNode(true);
+            this.formHandle.parentNode.replaceChild(clone, this.formHandle);
+
+            //redefine handle
+            this.formHandle = clone;
+
+            //reconstruct class
+            root[common.className].apply(this, [this.formHandle, this.submitCallback, this.settings]);
         }
     };
 
-    root.Validator = function (formHandle, submitCallback, settings) {
+    //encapsulation
+    root[common.className] = function () {
 
-        var jsFormValidator = new JsFormValidator(formHandle, submitCallback, settings);
+        function construct(constructor, args) {
 
-        function multiplex(object, memberList, fn) {
-            var a = 0,
-                l = memberList.length;
-
-            for (a = 0; a < l; a += 1) {
-                fn(object, memberList[a]);
+            function Class() {
+                return constructor.apply(this, args);
             }
+
+            Class.prototype = constructor.prototype;
+            return new Class();
         }
 
-        multiplex(root.Validator.prototype, ['validate', 'formatString', 'getFields'], function (object, member) {
-            object[member] = function () {
-                var args = arguments;
-                return jsFormValidator[member].apply(this, args);
-            };
-        });
+        var publicly = construct(Protected, arguments),
+            i,
+            l = common.publicMethods.length;
+
+        for (i = 0; i < l; i += 1) {
+
+            (function () {
+                var member = common.publicMethods[i];
+                root[common.className].prototype[member] = function () {
+                    return publicly[member].apply(publicly, arguments);
+                };
+            }());
+        }
 
         return this;
     };

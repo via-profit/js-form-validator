@@ -11,6 +11,8 @@
                 //return validation result
                 return res;
             });
+
+        window.validator = validator;
     };
 
 
