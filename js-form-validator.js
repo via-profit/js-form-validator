@@ -36,7 +36,7 @@
 
     //Class params
     var common = {
-            publicMethods: ['validate', 'formatString', 'destroy', 'reload', 'getHandle', 'getFields'],
+            publicMethods: ['validate', 'formatString', 'destroy', 'reload', 'getFormHandle', 'getFields'],
             className: 'Validator'
         },
 
@@ -382,6 +382,12 @@
 
             return ret;
         },
+
+        /*
+        * Validate all or single field
+        * @param {element} [validationField] - Validation field
+        * @return {boolean} - Validation result
+        */
         validate: function (validationField) {
 
             if (this.errors) {
@@ -799,21 +805,48 @@
             }
             return retData;
         },
-        getHandle: function () {
+
+        /*
+        * Get Form handle
+        * @return {element} - Form handle
+        */
+        getFormHandle: function () {
             return this.formHandle;
         },
+
+        /*
+        * Formatting string. Replace string
+        * @param {string} string - Source string. Example: "{0} age {1} years."
+        * @param {array} params - An array of values​​, which will be replaced with markers. Example: ['Bob', 36]
+        * @return {string} - Formatted string with replacing markers. Example "Bob age 36 years"
+        */
         formatString: function (string, params) {
             return string.replace(/\{(\d+)\}/gi, function (match, number) {
                 return (match && params[number]) ? params[number] : '';
             });
         },
+
+        /*
+        * Destroy validator
+        */
         destroy: function () {
+
+            //hide errors
             this.hideErrors(false, true);
 
+            //clone HTML form
             var clone = this.formHandle.cloneNode(true);
             this.formHandle.parentNode.replaceChild(clone, this.formHandle);
         },
-        reload: function () {
+
+        /*
+        * Reload validator.
+        * Example 1: reload(function (err, res) {...}, {autoHideErrors: false})
+        * Example 2: reload({autoHideErrors: false})
+        * @param {function} [submitCallback] - Submit callback function
+        * @param {object} [settings] - Settings object
+        */
+        reload: function (submitCallback, settings) {
 
             //hide errors
             this.hideErrors(false, true);
@@ -824,6 +857,19 @@
 
             //redefine handle
             this.formHandle = clone;
+
+            //set variables
+            switch (arguments.length) {
+
+            case 2:
+                this.submitCallback = submitCallback;
+                this.settings = settings;
+                break;
+
+            case 1:
+                this.settings = submitCallback;
+                break;
+            }
 
             //reconstruct class
             root[common.className].apply(this, [this.formHandle, this.submitCallback, this.settings]);
