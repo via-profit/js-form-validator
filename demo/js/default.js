@@ -1,6 +1,5 @@
 (function () {
 
-    //main init
     var init = function () {
 
         //get form handle
