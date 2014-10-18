@@ -3,6 +3,7 @@
     var init = function () {
 
         
+        
         //get form handle
         var formHandle = document.querySelector('form[name="demo-form"]'),
 
