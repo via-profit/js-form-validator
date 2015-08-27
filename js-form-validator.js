@@ -126,6 +126,39 @@
             };
 
 
+
+
+
+
+
+
+            // set locale
+            this.settings.locale = Settings.getSettings().language;
+
+            var langObj = Language.getLanguagesListByModule('Core'),
+                messages = {},
+                tmpArr = [],
+                n;
+
+            for (n in langObj) {
+                tmpArr = n.split('_');
+                if (tmpArr[0] === 'validator' && tmpArr[1] && tmpArr[2]) {
+                    messages[tmpArr[1]] = messages[tmpArr[1]] || {};
+                    messages[tmpArr[1]][tmpArr[2]] = langObj[n];
+                }
+            }
+
+            this.messages[this.settings.locale] = messages;
+
+
+
+
+
+
+
+
+
+
             if (!formHandle) {
                 return false;
             }
@@ -293,7 +326,7 @@
                 return this.name(value);
             },
             phone: function (value) {
-                if (value.match(/[0-9]+/gi) && value.match(/[0-9]+/gi)[0].length < 6) {
+                if (value.replace(/[^0-9]+/gi, '').match(/[0-9]+/gi) && value.replace(/[^0-9]+/gi, '').match(/[0-9]+/gi)[0].length < 6) {
                     return false;
                 }
                 return new RegExp(/^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/g).test(value);
