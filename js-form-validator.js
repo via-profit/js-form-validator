@@ -909,7 +909,6 @@
         }
     };
 
-    //encapsulation
     root[common.className] = function () {
 
         function construct(constructor, args) {
@@ -917,26 +916,21 @@
             function Class() {
                 return constructor.apply(this, args);
             }
-
             Class.prototype = constructor.prototype;
             return new Class();
         }
 
-        var publicly = construct(Protected, arguments),
-            i,
-            l = common.publicMethods.length;
+        var original = construct(Protected, arguments),
+            Publicly = function () {};
+        
+        Publicly.prototype = {};
+        Array.prototype.forEach.call(common.publicMethods, function (member) {
+            Publicly.prototype[member] = function () {
+                return original[member].apply(original, arguments);
+            };
+        });
 
-        for (i = 0; i < l; i += 1) {
-
-            (function () {
-                var member = common.publicMethods[i];
-                root[common.className].prototype[member] = function () {
-                    return publicly[member].apply(publicly, arguments);
-                };
-            }());
-        }
-
-        return this;
+        return new Publicly(arguments);
     };
 
 }(this));
