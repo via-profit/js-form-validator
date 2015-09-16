@@ -130,35 +130,6 @@
 
 
 
-
-
-            // set locale
-            this.settings.locale = Settings.getSettings().language;
-
-            var langObj = Language.getLanguagesListByModule('Core'),
-                messages = {},
-                tmpArr = [],
-                n;
-
-            for (n in langObj) {
-                tmpArr = n.split('_');
-                if (tmpArr[0] === 'validator' && tmpArr[1] && tmpArr[2]) {
-                    messages[tmpArr[1]] = messages[tmpArr[1]] || {};
-                    messages[tmpArr[1]][tmpArr[2]] = langObj[n];
-                }
-            }
-
-            this.messages[this.settings.locale] = messages;
-
-
-
-
-
-
-
-
-
-
             if (!formHandle) {
                 return false;
             }
