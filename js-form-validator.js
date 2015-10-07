@@ -126,10 +126,6 @@
             };
 
 
-
-
-
-
             if (!formHandle) {
                 return false;
             }
@@ -147,6 +143,8 @@
 
             //set callback
             this.submitCallback = submitCallback || null;
+
+            this.eventSubmit = (self.events.submit).bind(this); 
 
             //get fields and rules
             this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
@@ -175,11 +173,9 @@
             //set submit callback
             if (this.submitCallback) {
 
-                if (this.formHandle.addEventListener) {
-                    this.formHandle.addEventListener('submit', (self.events.submit).bind(this));
-                } else {
-                    this.formHandle.attachEvent('onsubmit', (self.events.submit).bind(this));
-                }
+
+                this.formHandle.addEventListener('submit', this.eventSubmit);
+
 
                 //air mode
                 if (this.settings.onAir) {
@@ -205,25 +201,10 @@
                             //each event list
                             for (i = 0; i < eventListLength; i += 1) {
 
-                                //for normal browsers
-                                if (this.fields[n].handle.addEventListener) {
-
-                                    if (eventList[i] === 'keyup') {
-                                        this.fields[n].handle.addEventListener(eventList[i], changeDelayFn);
-                                    } else {
-                                        this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
-                                    }
-
+                                if (eventList[i] === 'keyup') {
+                                    this.fields[n].handle.addEventListener(eventList[i], changeDelayFn);
                                 } else {
-                                    //for IE8
-                                    this.fields[n].handle.attachEvent('on' + eventList[i], (self.events.change).bind(this));
-                                }
-                            }
-
-                            if (!this.fields[n].handle.addEventListener) {
-                                //emulate onchange event for radio buttons and checkboxes
-                                if (this.fields[n].handle.type === 'radio' || this.fields[n].handle.type === 'checkbox') {
-                                    this.fields[n].handle.attachEvent('onclick', ieOnClickFn);
+                                    this.fields[n].handle.addEventListener(eventList[i], (self.events.change).bind(this));
                                 }
                             }
                         }
@@ -855,12 +836,8 @@
             //hide errors
             this.hideErrors(false, true);
 
-            //clone handle
-            var clone = this.formHandle.cloneNode(true);
-            this.formHandle.parentNode.replaceChild(clone, this.formHandle);
-
-            //redefine handle
-            this.formHandle = clone;
+            // remove event submit
+            this.formHandle.removeEventListener('submit', this.eventSubmit);
 
             //set variables
             switch (arguments.length) {
@@ -877,9 +854,11 @@
 
             //reconstruct class
             root[common.className].apply(this, [this.formHandle, this.submitCallback, this.settings]);
+            
         }
     };
 
+    //encapsulation
     root[common.className] = function () {
 
         function construct(constructor, args) {

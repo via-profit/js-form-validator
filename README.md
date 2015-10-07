@@ -10,7 +10,7 @@ Supported browsers
  - Firefox
  - Chrome
  - Safari
- - Internet Explorer 8+
+ - Internet Explorer 9+
 
 How to use
 =========
@@ -210,6 +210,16 @@ You can add custom rules.
 		}
 	});
 ```
+
+API
+-------------
+
+| Name          | Parameters      | Description                                                                                                |
+|---------------|-----------------|------------------------------------------------------------------------------------------------------------|
+| destroy       |        -        | Destroy validator                                                                                          |
+| reload        |        -        | Reload validator. Use this if you added the new input element on runtime                                   |
+| getFormHandle |        -        | Return current form handle                                                                                 |
+| getFields     |        -        | Return array of all validation fileds                                                                      |
 
 License
 =======
