@@ -127,6 +127,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (!formHandle) {
                 return false;
             }
@@ -145,8 +160,8 @@
             //set callback
             this.submitCallback = submitCallback || null;
 
-            this.events.submit = (this.events.submit).bind(this);
-            
+            this.eventSubmit = (self.events.submit).bind(this); 
+
             //get fields and rules
             this.fields = this.getFields(this.formHandle.querySelectorAll('[data-rule]'));
 
@@ -175,7 +190,7 @@
             if (this.submitCallback) {
 
 
-                this.formHandle.addEventListener('submit', this.events.submit);
+                this.formHandle.addEventListener('submit', this.eventSubmit);
 
 
                 //air mode
@@ -820,8 +835,9 @@
             //hide errors
             this.hideErrors(false, true);
 
-            // remove event submit
-            this.formHandle.removeEventListener('submit', this.events.submit);
+            //clone HTML form
+            var clone = this.formHandle.cloneNode(true);
+            this.formHandle.parentNode.replaceChild(clone, this.formHandle);
         },
 
         /*
@@ -837,7 +853,7 @@
             this.hideErrors(false, true);
 
             // remove event submit
-            this.formHandle.removeEventListener('submit', this.events.submit);
+            this.formHandle.removeEventListener('submit', this.eventSubmit);
 
             //set variables
             switch (arguments.length) {
@@ -853,7 +869,7 @@
             }
 
             //reconstruct class
-            root[common.className].apply(this, [this.formHandle, this.events.submit.bind(this), this.settings]);
+            root[common.className].apply(this, [this.formHandle, this.submitCallback, this.settings]);
             
         }
     };
