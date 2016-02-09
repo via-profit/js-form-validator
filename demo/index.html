@@ -75,6 +75,29 @@
 
     </form>
 
+
+
+
+    <form name="demo-form-2">
+		<div class="field">
+			<h1>Demo 2</h1>
+		</div>
+
+		<div class="field">
+			<label>Enter the number between 6-12<i>*</i></label>
+			<input type="text" name="between-number" data-rule="required|between-6-12|integer"/>
+		</div>
+
+		<div class="field">
+			<label>Enter the number maximum of 100<i>*</i></label>
+			<input type="text" name="max-number" data-rule="required|max-100|integer"/>
+		</div>
+
+		<div class="field submit">
+			<input type="submit" value="Submit this form"/>
+		</div>
+    </form>
+
 </body>
 
 </html>

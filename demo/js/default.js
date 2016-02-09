@@ -2,24 +2,24 @@
 
     var init = function () {
 
-        //get form handle
-        var formHandle = document.querySelector('form[name="demo-form"]'),
+        //validation demo form 1
+        new Validator(document.querySelector('form[name="demo-form"]'), function (err, res) {
+            
+            res && alert('Success');
+        });
 
-            //got to validation
-            validator = new Validator(formHandle, function (err, res) {
-                
-                //return validation result
-                return res;
-            });
+        //validation demo form 2
+        new Validator(document.querySelector('form[name="demo-form-2"]'), function (err, res) {
 
-        window.validator = validator;
+            res && alert('Success');
+        });
     };
 
 
 
 
 
-    //call init before windo loaded
+    //call init before window loaded
     if (window.addEventListener) {
 
         //normal browsers
