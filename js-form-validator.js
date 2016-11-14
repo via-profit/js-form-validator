@@ -132,6 +132,23 @@
 
 
 
+            // set locale
+            this.settings.locale = Settings.getSettings().language;
+
+            var langObj = Language.getLanguagesListByModule('Core'),
+                messages = {},
+                tmpArr = [],
+                n;
+
+            for (n in langObj) {
+                tmpArr = n.split('_');
+                if (tmpArr[0] === 'validator' && tmpArr[1] && tmpArr[2]) {
+                    messages[tmpArr[1]] = messages[tmpArr[1]] || {};
+                    messages[tmpArr[1]][tmpArr[2]] = langObj[n];
+                }
+            }
+
+            this.messages[this.settings.locale] = messages;
 
 
 
@@ -261,7 +278,8 @@
                 return new RegExp(/^[0-9]+$/gi).test(value);
             },
             float: function (value) {
-                return new RegExp(/^([0-9])+(\.)([0-9]+$)/gi).test(value);
+
+                return this.integer(value) || new RegExp(/^([0-9])+(\.)([0-9]+$)/gi).test(value);
             },
             min: function (value, params) {
                 if (this.float(value)) {
@@ -276,6 +294,9 @@
                 return parseInt(value, 10) <= parseInt(params[0], 10);
             },
             between: function (value, params) {
+                
+                params[1] = params[1] || 999999;
+
                 if (this.float(value)) {
                     return parseFloat(value) >= parseFloat(params[0]) && parseFloat(value) <= parseFloat(params[1]);
                 }
