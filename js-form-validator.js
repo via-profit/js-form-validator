@@ -36,7 +36,7 @@
 
     //Class params
     var common = {
-            publicMethods: ['validate', 'formatString', 'destroy', 'reload', 'getFormHandle', 'getFields'],
+            publicMethods: ['validate', 'formatString', 'destroy', 'reload', 'getFormHandle', 'getFields', 'showErrors'],
             className: 'Validator'
         },
 
@@ -278,7 +278,7 @@
                 return new RegExp(/^[0-9]+$/gi).test(value);
             },
             float: function (value) {
-
+                value = value.replace(/\,/, '.');
                 return this.integer(value) || new RegExp(/^([0-9])+(\.)([0-9]+$)/gi).test(value);
             },
             min: function (value, params) {
