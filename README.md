@@ -86,6 +86,30 @@ Callback function has two arguments: **err** and **res**. If the form has a vali
 	});
 ```
 
+**if the fields of your form are dynamic:**
+
+```javascript
+    // bind submit event
+document.querySelector('#my-form').addEventListener('submit', function (e) {
+
+    // prevent form submit
+    e.preventDefault();
+
+    // create validator
+    var validator = new Validator(this);
+
+
+
+    // now you can check for errors
+    if (validator.validate() === true) {
+
+        // success ... not errors
+    } else {
+        validator.showErrors();
+    }
+});
+```
+
 Settings
 =======
 
