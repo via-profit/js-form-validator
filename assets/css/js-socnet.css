@@ -1,0 +1,168 @@
+.js-socnet-buttons {
+    position: relative;
+    margin: 40px auto 0 auto;
+    text-align: center;
+}
+
+.js-socnet-buttons > div {
+    display: inline-block;
+    opacity: 0;
+}
+
+.js-socnet-buttons .js-socnet-button {
+    position: relative;
+    display: inline-block;
+    min-width: 110px;
+    margin: 0;
+    cursor: pointer;
+    text-align: left;
+    vertical-align: middle;
+    opacity: 1;
+    transition: opacity .3s;
+}
+
+.js-socnet-buttons .js-socnet-inner {
+    font-weight: normal;
+    position: relative;
+    display: block;
+    padding: 10px 18px 10px 40px;
+    color: #fff;
+    background: #474747;
+    border-radius: 38px;
+    font-size: 14px;
+    box-shadow: 0 13px 11px -12px rgba(0, 0, 0, 0.41);
+}
+
+.js-socnet-buttons .js-socnet-inner:before {
+    font-family: FontAwesome;
+    font-size: 15px;
+    position: absolute;
+    left: 6px;
+    width: 28px;
+    content: '';
+    text-align: center;
+}
+
+.js-socnet-buttons .js-socnet-button:hover {
+    opacity: .8;
+}
+
+.js-socnet-buttons .js-socnet-counter {
+    margin-left: 8px;
+}
+
+.js-socnet-buttons .vkontakte .js-socnet-inner {
+    background: #4392d8;
+}
+
+.js-socnet-buttons .vkontakte .js-socnet-inner:before {
+    content: '\f189';
+}
+
+.js-socnet-buttons .vkontakte:before {
+    border-bottom-color: #4392D8;
+}
+
+.js-socnet-buttons .vkontakte:after {
+    border-top-color: #4392D8;
+}
+
+.js-socnet-buttons .facebook .js-socnet-inner {
+    background: #434dd8;
+}
+
+.js-socnet-buttons .facebook .js-socnet-inner:before {
+    content: '\f09a';
+}
+
+.js-socnet-buttons .facebook:before {
+    border-bottom-color: #434DD8;
+}
+
+.js-socnet-buttons .facebook:after {
+    border-top-color: #434DD8;
+}
+
+.js-socnet-buttons .twitter .js-socnet-inner {
+    background: #75e2f5;
+}
+
+.js-socnet-buttons .twitter .js-socnet-inner:before {
+    content: '\f099';
+}
+
+.js-socnet-buttons .twitter:before {
+    border-bottom-color: #75E2F5;
+}
+
+.js-socnet-buttons .twitter:after {
+    border-top-color: #75E2F5;
+}
+
+.js-socnet-buttons .mailru .js-socnet-inner {
+    background: #427ce8;
+}
+
+.js-socnet-buttons .mailru .js-socnet-inner:before {
+    content: '\f1fa';
+}
+
+.js-socnet-buttons .mailru:before {
+    border-bottom-color: #427CE8;
+}
+
+.js-socnet-buttons .mailru:after {
+    border-top-color: #427CE8;
+}
+
+.js-socnet-buttons .odnoklassniki .js-socnet-inner {
+    background: #fd9107;
+}
+
+.js-socnet-buttons .odnoklassniki .js-socnet-inner:before {
+    content: '\f263';
+}
+
+.js-socnet-buttons .odnoklassniki:before {
+    border-bottom-color: #FD9107;
+}
+
+.js-socnet-buttons .odnoklassniki:after {
+    border-top-color: #FD9107;
+}
+
+.js-socnet-buttons .pinterest .js-socnet-inner {
+    background: #f70000;
+}
+
+.js-socnet-buttons .pinterest .js-socnet-inner:before {
+    content: '\f231';
+}
+
+.js-socnet-buttons .linkedin .js-socnet-inner:before {
+    content: '\f0e1';
+}
+
+.js-socnet-buttons .google .js-socnet-inner {
+    background: #e84242;
+}
+
+.js-socnet-buttons .google .js-socnet-inner:before {
+    content: '\f0d5';
+}
+
+.js-socnet-buttons .google:before {
+    border-bottom-color: #E84242;
+}
+
+.js-socnet-buttons .google:after {
+    border-top-color: #E84242;
+}
+
+.js-socnet-buttons .reddit .js-socnet-inner {
+    background: #42a2e8;
+}
+
+.js-socnet-buttons .reddit .js-socnet-inner:before {
+    content: '\f1a1';
+}

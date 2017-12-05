@@ -241,6 +241,11 @@
 document.addEventListener('DOMContentLoaded', function () {
 
 
+	// social network LIKE buttons
+	new JsSocnet();
+
+
+
 	function getRandomInt(min, max) {
 	    return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
