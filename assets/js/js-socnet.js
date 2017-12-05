@@ -46,7 +46,7 @@
                 },
                 twitter: {
                     counterUrl: 'https://cdn.api.twitter.com/1/urls/count.json?url={url}&callback={callback}',
-                    popupUrl: 'https://twitter.com/intent/tweet?url={url}&text={title}',
+                    popupUrl: 'https://twitter.com/intent/tweet?url={url}',
                     type: 'script',
                     getCount: function (data, callback) {
                         data && callback && callback(parseInt(data.count, 10));
