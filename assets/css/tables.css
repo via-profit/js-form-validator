@@ -1,0 +1,42 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 25px;
+    border: 1px solid #584b91;
+    text-align: left;
+    background: #FFF;
+    font-size: 14px;
+}
+
+table tbody tr {
+    background: #FFF;
+    transition: background 240ms ease-out;
+}
+
+table tbody tr:nth-child(2n) {
+    background: #f8f8f8;
+}
+
+table tbody tr:hover {
+    background: #e0e0e0;
+}
+
+table th {
+    border: 1px solid #38333f;
+    color: #FFF;
+    background: #38333f;
+    padding: 13px 10px 13px 10px;
+    font-weight: normal;
+    text-shadow: 0 0 0 #FFF;
+}
+
+table td {
+    border: 1px solid rgba(255, 255, 255, 0);
+    padding: 13px 10px 13px 10px;
+}
+
+table p, table h1, table h2, table h3, table h4 {
+    background-color: inherit;
+    box-shadow: inherit;
+}

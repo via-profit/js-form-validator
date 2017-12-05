@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta content="via-profit" name="author"/>
+	<meta content="via-profit" name="dcterms.rights"/>
+	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+	
+
+	<title>Js Form Validator | Javascript validator without dependencies</title>
+	<meta name="description" content="Javascript form validation on native javascript. Without dependencies, full customization and MIT Licence. Enjoy!">
+	<link rel="stylesheet" href="assets/css/tables.css">
+	<link rel="stylesheet" href="assets/css/layout.css">
+	<link rel="stylesheet" href="assets/css/forms.css">
+	<link rel="stylesheet" href="assets/css/js-splash.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.css">
+	<link rel="stylesheet" href="assets/codemirror/css/codemirror.css">
+	<link rel="stylesheet" href="assets/codemirror/theme/monokai.css">
+	<link rel="stylesheet" href="assets/codemirror/theme/github-light.css">
+
+</head>
+<body>
+	
+	<a name="home"></a>
+
+	<div class="cap-wrapper">
+		<div class="cap-container">
+
+			<div class="center">
+
+				<a href="#-mobile-menu-trigger" class="menu-trigger fa fa-bars"></a>
+
+				<a href="https://via-profit.ru" class="logo" alt="Via-profit logo" title="Via-Profit"></a>
+
+				<div class="menu">
+					<a class="menu-elem -active" href="#home">Home</a>
+					<a class="menu-elem" href="#overview">Overview</a>
+					<a class="menu-elem" href="#examples">Examples</a>
+					<a class="menu-elem" href="#docs">Docs</a>
+					<a class="menu-elem" href="#download">Download</a>
+				</div>
+
+				<div class="cap-right">
+					<a class="github" target="_blank" href="https://github.com/Via-profit/js-form-validator">
+						<span class="label">
+							<span class="icon fa fa-github"></span>
+							<span class="name">Repository</span>
+						</span>
+					</a>
+
+					<!-- <a class="fa fa-twitter twitter" target="_blank" href="https://twitter.com/viaprofitru"></a> -->
+					<a class="fa fa-paypal paypal" title="Donate on beer" target="_blank" href="https://www.paypal.me/vasvasnov/10"></a>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	
+
+	
+	<div class="home-screen" data-image="assets/img/sky.png">
+
+		
+		
+
+		<div class="main-info">
+			<div class="center">
+				<h1>JS Form Validator</h1>
+				<h2 class="subtitle">Pure Javascript. No jQuery</h2>
+				<p>Form validation on native javascript. Without dependencies.<br><span class="main-info-sub-title">Full customization. MIT Licence</span></p>
+			</div>
+		</div>
+
+		
+		<div class="mount"></div>
+	</div>
+
+
+
+
+
+
+
+
+	<div class="overview-block">
+		<a name="overview"></a>
+		<div class="overview-info">
+			
+			<div class="center">
+				<h2>Overview</h2>
+				<h3 class="subtitle">The next invention of the wheel?</h3>
+
+				<p>Yes! We present you a very simple solution for validating HTML forms. If you do not want to pull a MB of JS dependencies, like, «jQuery» just for the sake of checking the correctness of the entered user data, then our solution will suit you.</p>
+
+			</div>
+		</div>
+	</div>
+
+	
+
+
+	<div class="dots">
+		<div class="dot"></div>
+		<div class="dot"></div>
+		<div class="dot"></div>
+		<div class="dot"></div>
+	</div>
+
+
+	
+
+
+	<div class="examples-block">
+		<a name="examples"></a>
+		<div class="center">
+			<h1>Examples</h1>
+			<h2 class="subtitle">Try it now</h2>
+
+			<div class="examples-list">
+				
+				<h3>
+					<span class="number number-1">1</span>
+					Simple form
+				</h3>
+				
+				
+				<div class="example-table">
+					<div class="example-cell cell-form">
+						<form name="demo-form-1">
+
+							<div class="field-header">
+								<div class="field-image"></div>
+								<div class="field-title">Sign up</div>
+								<div class="field-subtitle">Join the community</div>
+							</div>
+
+							<div class="field">
+								<div class="input-wrapper">
+									<input type="text" name="name" id="example-1-name" data-rule="required|name" autocomplete="off">
+									<label class="placeholder" for="example-1-name">Your name</label>
+								</div>
+							</div>
+
+							<div class="field">
+								<div class="input-wrapper">
+									<input type="text" name="email" id="example-1-email" data-rule="required|email" autocomplete="off">
+									<label class="placeholder" for="example-1-email">E-mail</label>
+								</div>
+							</div>
+
+							<div class="field">
+								<div class="input-wrapper">
+									<input type="password" name="password" id="example-1-password" data-rule="required|minlength-6" autocomplete="off">
+									<label class="placeholder" for="example-1-password">Password</label>
+								</div>
+							</div>
+
+							<div class="field">
+								<input type="submit" value="Create account">
+							</div>
+						</form>
+					</div>
+
+					<div class="example-cell">
+						<div class="code-block">
+							<p>To run, you just need to specify the form and the callback function</p>
+							<p><i>Notice: run this code after the DOM loaded!</i></p>
+							<textarea class="codemirror" data-mode="javascript">// Get form handle
+var formHandle = document.querySelector('form[name="demo-form-1"]');
+
+// Got to validation
+new Validator(formHandle, function (err, res) {
+
+    // some code of success of validation
+    return res;
+});</textarea>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+				<h3>
+					<span class="number number-2">2</span>
+					If the fields of your form are dynamic
+				</h3>
+				
+				
+				<div class="example-table">
+					<div class="example-cell cell-form">
+						<form name="demo-form-2">
+
+							<div class="fields-list">
+								<div class="field-header">
+									<div class="field-title">Interests</div>
+									<div class="field-subtitle">A few words about what you love</div>
+								</div>
+
+								<div class="field">
+									<div class="input-wrapper">
+										<input type="text" name="interests[1]" id="example-2-interests-1" data-rule="required|minlength-3" autocomplete="off">
+										<label class="placeholder" for="example-2-interests-1">Minimum 3 characters</label>
+									</div>
+									<a href="#" class="example-2-remove-input fa fa-times" title="Remove field"></a>
+								</div>
+
+								
+							</div>
+
+							<a href="#" class="example-2-create-field">
+								<span class="fa fa-plus"></span> <span class="name">Create new field</span>
+							</a>
+
+							<div class="field">
+								<input type="submit" value="Submit it">
+							</div>
+						</form>
+					</div>
+
+					<div class="example-cell">
+						<div class="code-block">
+							<p>By default, parameter «<b>autoTracking</b>» is equal to «<b>true</b>»</p>
+							<p>If the fields of your form are dynamic, just use «<b>Form Validator</b>» as usual or set this parameter as «<b>true</b>» forcibly</p>
+							<textarea class="codemirror" data-mode="javascript">// Get form handle
+var formHandle = document.querySelector('form[name="demo-form-2"]');
+
+// Got to validation
+new Validator(formHandle, function (err, res) {
+
+    // some code of success of validation
+    return res;
+}, {
+  	// set auto tracking forcibly
+	autoTracking: true
+});</textarea>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+				<h3>
+					<span class="number number-3">3</span>
+					You can use your custom rules
+				</h3>
+
+				
+				<div class="example-table">
+					<div class="example-cell cell-form">
+
+
+						<form name="demo-form-3">
+
+							<div class="fields-list">
+								<div class="field-header">
+									<div class="field-image"></div>
+									<div class="field-title">Milk</div>
+									<div class="field-subtitle">Just write the word <b>«Milk»*</b></div>
+								</div>
+
+								<div class="field">
+									<div class="input-wrapper">
+										<input type="text" name="milk" id="example-3-milk" data-rule="required|milk" autocomplete="off">
+										<label class="placeholder" for="example-3-milk">Write the «Milk» word</label>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="field">
+								<input type="submit" value="Submit it">
+							</div>
+
+							<div class="field field-description"><i class="asterisk">*</i>Imagine that we need to get a specific word from the user</div>
+						</form>
+
+
+					</div>
+
+					<div class="example-cell">
+						<div class="code-block">
+							<textarea class="codemirror" data-mode="javascript">// Get form handle
+var formHandle = document.querySelector('form[name="demo-form-3"]'),
+	options: {
+
+		// set a custom rule
+		rules: {
+			milk: function (value) {
+				return (value.trim().toLowerCase() === 'milk');
+			}
+		},
+
+		// set a incorrect message text
+		messages: {
+			en: {
+				milk: {
+					incorrect: 'This is not a Milk ;-)'
+				}
+			}
+		}
+	};
+
+// Got to validation
+new Validator(formHandle, function (err, res) {
+    return res;
+
+}options);</textarea>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="docs-block">
+		<a name="docs"></a>
+		<div class="center">
+			<h1>Documentation</h1>
+			<h2 class="subtitle">How its work</h2>
+			
+			<textarea class="codemirror" data-mode="javascript">var validator = new Validator(formHandle, [callback], [settings]);</textarea>
+
+			<p>HTML. Apply <b>«[data-rule]»</b> attribute for each form element that you want to check. or the attribute value, specify the name of one or more rules.</p>
+			<p>Javascript. You need to create an instance of Validator and pass it two parameters:
+				<ul>
+					<li>Form handle</li>
+					<li>Callback function</li>
+				</ul>
+				Callback function has two arguments: err and res. If the form has a validation error, the argument err will be the Object, and if there are no errors - null. Argument res returns a boolean value (true or false) and there is always.
+			</p>
+
+			
+			<p>&nbsp;</p>
+			<h3>Full code listing</h3>
+
+			<textarea class="codemirror" data-mode="text/html"><!-- Your form -->
+<form name="form" id="my-form">
+
+	<!-- Required field email -->
+	<input type="text" name="email" data-rule="required|email"/>
+
+	<input type="submit" value="Submit"/>
+
+</form>
+
+<!-- Append the validator JS script -->
+<script type="text/javascript" src="js-form-validator.js"></script>
+
+<script>
+	// Init validator with standart settings
+	new Validator(document.querySelector('#my-form'), function (err, res) {
+		return res;
+	});
+</script></textarea>
+
+
+			
+			<p>&nbsp;</p>
+			<h3>Settings</h3>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Default</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>onAir</td>
+						<td>Boolean</td>
+						<td>true</td>
+						<td>Validation of a current field after the events of «change», «keyup», «blur»</td>
+					</tr>
+
+					<tr>
+						<td>showErrors</td>
+						<td>Boolean</td>
+						<td>true</td>
+						<td>Show errors automatically</td>
+					</tr>
+
+					<tr>
+						<td>autoHideErrors</td>
+						<td>Boolean</td>
+						<td>false</td>
+						<td>Auto-hide the error messages</td>
+					</tr>
+
+					<tr>
+						<td>autoHideErrorsTimeout</td>
+						<td>Integer</td>
+						<td>2000</td>
+						<td>Timeout auto-hide error messages</td>
+					</tr>
+
+					<tr>
+						<td>errorClassName</td>
+						<td>String</td>
+						<td>error</td>
+						<td>Class name for invalid input and error message element</td>
+					</tr>
+
+					<tr>
+						<td>removeSpaces</td>
+						<td>Boolean</td>
+						<td>false</td>
+						<td>Remove spaces from validation field values before validation</td>
+					</tr>
+
+					<tr>
+						<td>autoTracking</td>
+						<td>Boolean</td>
+						<td>true</td>
+						<td>Tracking of new elements</td>
+					</tr>
+
+					<tr>
+						<td>locale<i class="asterisk">*</i></td>
+						<td>String</td>
+						<td>en</td>
+						<td>Language error messages</td>
+					</tr>
+
+					<tr>
+						<td>messages<i class="asterisk">**</i></td>
+						<td>Object</td>
+						<td>{ }</td>
+						<td>Object for custom error messages</td>
+					</tr>
+
+					<tr>
+						<td>rules<i class="asterisk">***</i></td>
+						<td>Object</td>
+						<td>{ }</td>
+						<td>Object for custom rules</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p><i class="asterisk">*</i>locale - location index for message object.</p>
+			<p><i class="asterisk">**</i>messages - an object having the structure:</p>
+			<textarea class="codemirror" data-mode="javascript">messages: {
+	localeName: {
+		RuleName1: {
+			empty: 'Message text for empty value',
+			incorrect: 'Message text for incorrect value'
+		},
+		RuleName2: {
+			empty: 'Message text for empty value',
+			incorrect: 'Message text for incorrect value'
+		}
+		//..
+	}
+}</textarea>
+			<p><i class="asterisk">***</i>rules - an object having the structure:</p>
+			<textarea class="codemirror" data-mode="javascript">rules: {
+	myCustomRulename: function (value, params) {
+		//Your code here..
+		//The function should return a boolean value
+		//true - if the filed
+	}
+}</textarea>
+
+
+
+
+			<p>&nbsp;</p>
+			<h3>Rules</h3>
+			
+			<p>For the attaching of the rules, you have to add the attribute <b>«[data-rule]»</b> to the form element, and as value is <b>rule name</b></p>
+			<textarea class="codemirror" data-mode="text/html"><input type="text" name="phone" data-rule="phone"/></textarea>
+
+			<p>For a form element, you can use a few rules that are listed through the separator «<b>|</b>»</p>
+			<textarea class="codemirror" data-mode="text/html"><input type="text" name="phone" data-rule="phone|required"/></textarea>
+			
+			<p>Some rules may have parameters. The parameters must be separated by the symbol  «<b>-</b>»</p>
+			<textarea class="codemirror" data-mode="text/html"><input type="text" name="count" data-rule="between-5-9"/></textarea>
+
+			<p>&nbsp;</p>
+			<h3>List of rules</h3>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Parameters</th>
+						<th>Example</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>notzero</td>
+						<td>-</td>
+						<td>notzero</td>
+						<td>The value can not be zero</td>
+					</tr>
+
+					<tr>
+						<td>integer</td>
+						<td>-</td>
+						<td>integer</td>
+						<td>Value must be an positive integer</td>
+					</tr>
+
+					<tr>
+						<td>float</td>
+						<td>-</td>
+						<td>float</td>
+						<td>The value must be a floating point number</td>
+					</tr>
+
+					<tr>
+						<td>name</td>
+						<td>-</td>
+						<td>name</td>
+						<td>The correct name. Use spaces, letters of the alphabet and the symbol «<b>-</b>»</td>
+					</tr>
+
+					<tr>
+						<td>lastname</td>
+						<td>-</td>
+						<td>lastname</td>
+						<td>The correct lastname. Use spaces, letters of the alphabet and the symbol «<b>-</b>»</td>
+					</tr>
+
+					<tr>
+						<td>phone</td>
+						<td>-</td>
+						<td>phone</td>
+						<td>The correct phone number</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td>email</td>
+						<td>-</td>
+						<td>email</td>
+						<td>The correct email address</td>
+					</tr>
+
+					<tr>
+						<td>min</td>
+						<td>numeric</td>
+						<td>min-10</td>
+						<td>The value must not be less than the value specified in the first parameter</td>
+					</tr>
+
+					<tr>
+						<td>max</td>
+						<td>numeric</td>
+						<td>max-34</td>
+						<td>The value must not be greater than the value specified in the first parameter</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td>between</td>
+						<td>numeric-numeric</td>
+						<td>between-5-15</td>
+						<td>The value must be between the values ​​specified in the first and the second parameter</td>
+					</tr>
+
+					<tr>
+						<td>length</td>
+						<td>numeric-numeric</td>
+						<td>length-2-100</td>
+						<td>The number of characters value must be between the values ​​specified in the first and the second parameter</td>
+					</tr>
+
+					<tr>
+						<td>minlength</td>
+						<td>numeric</td>
+						<td>minlength-8</td>
+						<td>The number of characters value must not be less than the value specified in the first parameter</td>
+					</tr>
+
+					<tr>
+						<td>maxlength</td>
+						<td>numeric</td>
+						<td>maxlength-50</td>
+						<td>The number of characters value must not be greater than the value specified in the first parameter</td>
+					</tr>
+
+					<tr>
+						<td>maxfilesize</td>
+						<td>numeric-units</td>
+						<td>maxfilesize-2.5-MB</td>
+						<td>The size of one or more selected files must not be greater than the value specified in the first parameter</td>
+					</tr>
+
+					<tr>
+						<td>fileextension</td>
+						<td>string-[string]</td>
+						<td>fileextension-jpg-png-gif</td>
+						<td>Extension of one or more selected files must match one of the values ​​passed in the parameters</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+
+
+
+
+
+			<p>&nbsp;</p>
+			<h3>Api</h3>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="api-th-name">Name</th>
+						<th class="api-th-required-params">Reuired parameters</th>
+						<th>Optional parameters</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>validate</td>
+						<td>-</td>
+						<td><b>HTML Object</b> - Specified validation field</td>
+						<td>Start validation for all form or specified field. Return value - Object of errors or true</td>
+					</tr>
+
+					<tr>
+						<td>destroy</td>
+						<td>-</td>
+						<td>-</td>
+						<td>Destroy validator</td>
+					</tr>
+
+					<tr>
+						<td>reload</td>
+						<td>-</td>
+						<td>-</td>
+						<td>Reload validator</td>
+					</tr>
+
+					<tr>
+						<td>getFormHandle</td>
+						<td>-</td>
+						<td>-</td>
+						<td>Return current form handle</td>
+					</tr>
+
+					<tr>
+						<td>getFields</td>
+						<td>-</td>
+						<td>-</td>
+						<td>Return array of all validation fileds</td>
+					</tr>
+
+					<tr>
+						<td>showErrors</td>
+						<td>-</td>
+						<td><b>HTML Object</b> - Specified validation field</td>
+						<td>Show errors for all fields or specified field</td>
+					</tr>
+
+					<tr>
+						<td>hideErrors</td>
+						<td>-</td>
+						<td><b>HTML Object</b> - Specified validation field<br><b>Boolean</b> - Remove CSS error classes (See option «<b>errorClassName</b>»)</td>
+						<td>Show errors for all fields or specified field</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="download-block">
+		<a name="download"></a>
+		<div class="center">
+			<h1>Download</h1>
+			<h2 class="subtitle">Get the source code</h2>
+
+			<div class="download-table">
+				<div class="download-cell align-right">
+					<a href="https://github.com/Via-profit/js-form-validator/archive/1.0.zip" title="Download ZIP" class="download-icon download-zip"></a>
+				</div>
+
+				<div class="download-cell download-cell-separator"></div>
+
+				<div class="download-cell align-left">
+					<a href="https://github.com/Via-profit/js-form-validator/archive/1.0.tar.gz" title="Download TAR gz" class="download-icon download-tar"></a>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+			
+
+
+
+
+	<footer>
+		<div class="footer-inner center">
+			<div class="footer-table">
+				<div class="footer-cell">
+					<div class="licence">
+						<div class="licence-line line-header">The MIT License (MIT) Copyright (c) 2013 kunano.ru</div>
+						<div class="licence-line">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</div>
+						<div class="licence-line">The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</div>
+						<div class="licence-line">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>
+					</div>
+				</div>
+				
+				<div class="footer-cell footer-cell-center">
+					<a class="paypal" title="Donate on beer" target="_blank" href="https://www.paypal.me/vasvasnov/10">
+						<span class="label">
+							<span class="icon fa fa-paypal"></span>
+							<span class="name">Donate</span>
+						</span>
+					</a>
+				</div>
+
+				<div class="footer-cell">
+					
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+
+	<div class="top-scroller">
+		<div class="icon fa fa-angle-up"></div>
+	</div>
+
+
+	<script src="assets/js/js-topper.js"></script>
+	<script src="assets/js/js-scroller.js"></script>
+	<script src="assets/js/js-splash.js"></script>
+	<script src="js-form-validator.js"></script>
+
+	<script src="assets/codemirror/js/codemirror.js"></script>
+	<script src="assets/codemirror/addon/edit/matchbrackets.js"></script>
+	<script src="assets/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="assets/codemirror/mode/xml/xml.js"></script>
+	<script src="assets/codemirror/mode/javascript/javascript.js"></script>
+	<script src="assets/codemirror/mode/css/css.js"></script>
+	<script src="assets/codemirror/mode/clike/clike.js"></script>
+
+	<script src="assets/js/scripts.js"></script>
+
+</body>
+</html>
