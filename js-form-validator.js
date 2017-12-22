@@ -617,7 +617,7 @@
 						        }
 						    } catch (e) {
 						        ruleName = 'required';
-						        message = self.messages[self.settings.locale][ruleName][messageType];
+						        message = self.messages.en[ruleName][messageType];
 						    }
 
 						    // push value into params if params is empty
