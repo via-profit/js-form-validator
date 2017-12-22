@@ -260,6 +260,21 @@ document.addEventListener('DOMContentLoaded', function () {
 						closeBtn: false,
 						autoClose: 1600
 					});
+				}, {
+
+					messages: {
+						ru: {
+							required: {
+								empty: 'Пусто',
+								incorrect: 'OOOps'
+							},
+							name: {
+								empty: 'Надо имя',
+								incorrect: 'Некорректное имя'
+							}
+						}
+					},
+					locale: 'ru'
 				});
 			break;
 

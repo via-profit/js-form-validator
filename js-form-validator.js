@@ -445,7 +445,7 @@
 
 			// apply other settings
 			Object.keys(settings).forEach(function (param) {
-				self.settings[param] = self.settings[param];
+				self.settings[param] = settings[param];
 			});
 
 			return this;
