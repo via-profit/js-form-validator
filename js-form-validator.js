@@ -117,7 +117,7 @@
 
 			                [].forEach.call(mutation.addedNodes, function (targetElem) {
 
-			                	childsArray = targetElem.querySelectorAll('*');
+			                	childsArray = targetElem.querySelectorAll ? targetElem.querySelectorAll('*') : [];
 
 			                	if (['SELECT', 'INPUT', 'TEXTAREA', 'CHECKBOX', 'RADIOBUTTON'].indexOf(targetElem.tagName) !== -1) {
 			                		reloadFlag = true;
