@@ -92,6 +92,10 @@ h3 .number-2 {
 	background: #df126f;
 }
 
+.mobile-cap, .mobile-menu-wrapper {
+	display: none;
+}
+
 form[name="demo-form-2"] input[type='submit'] {
 	background: #df126f;
 }

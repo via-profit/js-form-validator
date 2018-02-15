@@ -84,11 +84,12 @@
 
 
 
-	// top menu sticky
-	new JsTopper(document.querySelector('.cap-wrapper'), {
-	    stickStartOffsetTop: 0
-	});
+	
 
+	//Event to show/hide mobile menu on trigger click
+	document.querySelector('.menu-trigger').addEventListener('click', function() {
+	    document.body.classList.toggle('mobile-menu-opener');
+	});
 
 
 
@@ -171,7 +172,10 @@
 
 
 
-
+	var lastRelease = document.body.getAttribute('data-last-release');
+	[].forEach.call(document.querySelectorAll('[href]'), function (element) {
+		element.setAttribute('href', element.getAttribute('href').replace(/\{lastRelease\}/, lastRelease));
+	});
 
 
 
@@ -390,5 +394,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				});
 			break;
 		}
+	});
+
+
+
+
+
+
+
+	// top menu sticky
+	new JsTopper(document.querySelector('.cap-wrapper'), {
+	    stickStartOffsetTop: 0
 	});
 });

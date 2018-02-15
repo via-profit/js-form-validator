@@ -27,13 +27,46 @@
 	<link rel="stylesheet" href="assets/css/js-splash.css">
 	<link rel="stylesheet" href="assets/css/font-awesome.css">
 	<link rel="stylesheet" href="assets/css/js-socnet.css">
+	<link rel="stylesheet" href="assets/css/mobile.css">
 	<link rel="stylesheet" href="assets/codemirror/css/codemirror.css">
 	<link rel="stylesheet" href="assets/codemirror/theme/monokai.css">
 	<link rel="stylesheet" href="assets/codemirror/theme/github-light.css">
 
 </head>
-<body>
+<body data-last-release="2.1">
 	
+
+
+	<div class="mobile-menu-wrapper">
+	    <div class="mobile-menu-container">
+	        <ul>
+	            <li>
+					<a class="menu-elem -active" href="#home">Home</a>
+					<a class="menu-elem" href="#overview">Overview</a>
+					<a class="menu-elem" href="#examples">Examples</a>
+					<a class="menu-elem" href="#docs">Docs</a>
+					<a class="menu-elem" href="#download">Download</a>
+	        	</li>
+	            <li class="separator">&nbsp;</li>
+	            <li>
+	                <a class="download" href="https://github.com/Via-profit/js-form-validator/archive/{lastRelease}.zip">
+	                    <span class="icon zip fa fa-download"></span>
+	                    <span>Download ZIP</span> 
+	                </a>
+	            </li>
+
+	            <li>
+	                <a class="download" href="https://github.com/Via-profit/js-form-validator/archive/{lastRelease}.tar.gz">
+	                    <span class="icon tar fa fa-download"></span>
+	                    <span>Download TAR gz</span> 
+	                </a>
+	            </li>
+	        </ul>
+	    </div>
+	</div>
+
+
+
 	<a name="home"></a>
 
 	<div class="cap-wrapper">
@@ -41,7 +74,9 @@
 
 			<div class="center">
 
-				<a href="#-mobile-menu-trigger" class="menu-trigger fa fa-bars"></a>
+				<a href="#-mobile-menu-trigger" class="menu-trigger">
+					<span></span>
+				</a>
 
 				<a href="https://via-profit.ru" class="logo" alt="Via-profit logo" title="Via-Profit"></a>
 
@@ -759,13 +794,13 @@ new Validator(formHandle, function (err, res) {
 
 			<div class="download-table">
 				<div class="download-cell align-right">
-					<a href="https://github.com/Via-profit/js-form-validator/archive/2.1.zip" title="Download ZIP" class="download-icon download-zip"></a>
+					<a href="https://github.com/Via-profit/js-form-validator/archive/{lastRelease}.zip" title="Download ZIP" class="download-icon download-zip"></a>
 				</div>
 
 				<div class="download-cell download-cell-separator"></div>
 
 				<div class="download-cell align-left">
-					<a href="https://github.com/Via-profit/js-form-validator/archive/2.1.tar.gz" title="Download TAR gz" class="download-icon download-tar"></a>
+					<a href="https://github.com/Via-profit/js-form-validator/archive/{lastRelease}.tar.gz" title="Download TAR gz" class="download-icon download-tar"></a>
 				</div>
 			</div>
 

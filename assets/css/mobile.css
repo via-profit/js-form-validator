@@ -1,0 +1,355 @@
+@media all and (max-width: 600px) {
+	body .center {
+		margin: 0 4px;
+	}
+
+	.cap-wrapper {
+		height: 50px;
+		width: 100%!important;
+	}
+
+	.cap-container .cap-right .github {
+		top: -2px;
+	}
+
+	.cap-container .cap-right .paypal {
+		margin: 0;
+		top: 0px;
+		padding: 16px 16px;
+	}
+
+	.mobile-menu-wrapper {
+		display: block;
+	}
+
+	.cap-container .menu {
+		display: none;
+	}
+
+	.cap-container .cap-right {
+		right: 0;
+		top: 0px;
+	}
+
+	.cap-container .menu-trigger {
+		display: block;
+		position: absolute;
+		left: 0;
+		width: 44px;
+		height: 50px;
+		top: 0;
+		color: #ffffff;
+		text-decoration: none;
+		/* background: #616161; */
+	}
+
+	.cap-container .menu-trigger span {
+		position: absolute;
+		background: #fff;
+		height: 2px;
+		width: 24px;
+		top: 50%;
+		margin: -1px 0 0 10px;
+	}
+
+	.cap-container .menu-trigger span:before, .cap-container .menu-trigger span:after {
+		content: '';
+		position: absolute;
+		height: inherit;
+		width: inherit;
+		background: inherit;
+		bottom: 8px;
+	}
+
+	.cap-container .menu-trigger span:after {
+		bottom: -8px;
+	}
+
+	.cap-container .logo {
+		display: none;
+	}
+
+	.mobile-menu-wrapper {
+		background: rgba(0, 0, 0, 0.85);
+		position: fixed;
+		top: 50px;
+		left: 0;
+		z-index: 999;
+		overflow-y: scroll;
+		width: 100%;
+		transition: top 300ms ease-out, opacity 200ms linear;
+		opacity: 0;
+		border-radius: 0;
+		bottom: 0;
+		visibility: hidden;
+	}
+
+	body.mobile-menu-opener .mobile-menu-wrapper {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	body.mobile-menu-opener .cap-wrapper .cap-container {
+		background: rgba(0, 0, 0, 0.95);
+	}
+
+	.mobile-menu-wrapper ul {
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: relative;
+		list-style: none;
+	}
+
+	.mobile-menu-wrapper ul ul {
+		padding-left: 40px;
+		overflow: hidden;
+		max-height: 0;
+		transition: all 1s ease-out;
+	}
+
+	.mobile-menu-wrapper ul ul ul {
+		padding-left: 10px;
+	}
+
+	.mobile-menu-wrapper ul ul.-visible {
+		max-height: 9999px;
+	}
+
+	.mobile-menu-wrapper a {
+		display: block;
+		color: #FFF;
+		text-decoration: none;
+		padding: 10px 20px 10px 45px;
+		text-transform: capitalize;
+		position: relative;
+		border: none!important;
+		left: -10px;
+		opacity: 0;
+	}
+
+	.mobile-menu-wrapper .menu-elem:nth-child(1) {
+		transition: all 240ms 100ms ease-out;
+	}
+
+	.mobile-menu-wrapper .menu-elem:nth-child(2) {
+		transition: all 240ms 200ms ease-out;
+	}
+
+	.mobile-menu-wrapper .menu-elem:nth-child(3) {
+		transition: all 240ms 300ms ease-out;
+	}
+
+	.mobile-menu-wrapper .menu-elem:nth-child(4) {
+		transition: all 240ms 400ms ease-out;
+	}
+
+	.mobile-menu-wrapper .menu-elem:nth-child(5) {
+		transition: all 240ms 500ms ease-out;
+	}
+
+	.mobile-menu-opener .mobile-menu-wrapper a {
+		left: 0;
+		opacity: 1;
+	}
+
+	.mobile-menu-wrapper .contact-email {
+		text-transform: none;
+		top: 10px;
+	}
+
+	.mobile-menu-wrapper ul ul a {
+		padding: 10px 20px 10px 35px;
+	}
+
+	.mobile-menu-wrapper .icon {
+		width: 20px;
+		height: 20px;
+		background-size: contain;
+		position: absolute;
+		top: 4px;
+		left: 10px;
+		color: #ffffff;
+		text-align: center;
+		line-height: 20px;
+		border-radius: 100%;
+		padding: 2px;
+	}
+
+	.mobile-menu-wrapper .icon.zip {
+		background: #1c64ac;
+	}
+
+	.mobile-menu-wrapper .icon.tar {
+		background: #6e6dff;
+	}
+
+	.mobile-menu-wrapper .corner {
+		background-size: contain;
+		position: absolute;
+		left: 16px;
+		top: 14px;
+		border-top: 4px solid rgba(0, 0, 0, 0);
+		border-left: 6px solid #ffffff;
+		border-bottom: 4px solid rgba(0, 0, 0, 0);
+	}
+
+	.mobile-menu-wrapper .active {
+		color: #4061ff;
+	}
+
+	.mobile-menu-wrapper .-has-childs {
+	}
+
+	.mobile-menu-opener .main-menu-wrapper {
+		left: 0;
+		opacity: 0.9;
+	}
+
+	.mobile-menu-wrapper .download {
+		font-size: 13px;
+	}
+
+	h3 {
+		font-size: 17px;
+		margin: 14px 5px;
+		line-height: 17px;
+	}
+
+	.home-screen .main-info:before {
+		width: 100%;
+	}
+
+	.example-table {
+		display: block;
+		width: auto;
+	}
+
+	form {
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 8px 19px -7px rgba(0, 0, 0, 0.19), 0 -1px 5px 0 rgba(0, 0, 0, 0.17);
+		width: auto;
+		padding: 15px;
+	}
+
+	.example-table .example-cell {
+		padding: 0;
+		display: block;
+		margin: 20px 0 0 0;
+	}
+
+	.examples-list [name="demo-form-1"] {
+		width: auto;
+	}
+
+	.examples-list [name="demo-form-2"] {
+		box-sizing: border-box;
+		width: auto;
+		padding-right: 30px;
+	}
+
+	.examples-list [name="demo-form-3"] {
+		width: auto;
+		margin: 0 auto 10px auto;
+		overflow: hidden;
+	}
+
+	.examples-list [name="demo-form-3"] .field-title {
+		right: 0;
+	}
+
+	.examples-list [name="demo-form-3"] .field-subtitle {
+		right: 0;
+	}
+
+	body .cm-s-github-light .CodeMirror-lines {
+		font-size: 10px;
+		line-height: 14px;
+		padding: 5px;
+	}
+
+	.docs-block {
+		margin: 0 0 60px 0;
+	}
+
+	table thead tr th:nth-child(2), table thead tr th:nth-child(3), table tbody tr td:nth-child(2), table tbody tr td:nth-child(3) {
+		display: none;
+	}
+
+	table thead th {
+		padding: 10px 5px;
+	}
+
+	table tbody td {
+		padding: 5px 5px;
+	}
+
+	table tbody tr td:nth-child(1) {
+		font-size: 13px;
+	}
+
+	table thead tr th:nth-child(1), table tbody tr td:nth-child(1) {
+		width: 36%;
+		word-break: break-all;
+	}
+
+	.download-table .download-cell-separator {
+		width: 10px;
+	}
+
+	.download-table .download-icon {
+		height: 140px;
+		width: 140px;
+	}
+
+	.js-socnet-buttons .js-socnet-button {
+		margin: 10px 5px;
+	}
+
+	footer .footer-inner {
+		padding: 0;
+	}
+
+	footer .footer-table {
+		display: block;
+		width: auto;
+	}
+
+	footer .footer-cell {
+		display: block;
+		width: auto;
+		position: static;
+	}
+
+	footer .footer-cell-center {
+	}
+
+	footer .paypal {
+		position: absolute;
+		top: 10px;
+		width: 70px;
+		left: 50%;
+		margin: 0 0 0 -70px;
+	}
+
+	footer .licence-line.line-header {
+		text-align: center;
+	}
+
+	footer .licence {
+		text-align: justify;
+		padding: 0 0 40px 0;
+	}
+
+	footer .licence:before {
+		content: '';
+		left: 50%;
+		position: absolute;
+		background: url(../img/mobile-logo.png) no-repeat center center;
+		background-size: contain;
+		width: 88px;
+		height: 22px;
+		bottom: 40px;
+		margin: 0 0 0 -44px;
+		opacity: .5;
+	}
+}
