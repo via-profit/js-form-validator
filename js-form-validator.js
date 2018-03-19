@@ -45,6 +45,9 @@
 			    // classname for error messages
 			    errorClassName: 'error',
 
+			    // classname for success messages
+			    successClassName: 'success',
+
 			    // remove spaces from validation field values
 			    removeSpaces: false,
 
@@ -408,6 +411,9 @@
 			    this.showErrors(e.target);
 			    !this.settings.showErrors && this.submitCallback(this.errors, false);
 			    
+			} else {
+				// add success class for this
+					e.target.classList.add(self.settings.successClassName);
 			}
 		},
 		_eventChangeWithDelay: function (e) {
@@ -660,8 +666,11 @@
 
 		       		errorDiv = self.fields[n].handle.nextElementSibling;
 
-		       		// remove class error
-					removeClass && self.fields[n].handle.classList.remove(self.settings.errorClassName);
+		       		// remove class error and add success
+							if (removeClass) {
+								self.fields[n].handle.classList.remove(self.settings.errorClassName);
+								self.fields[n].handle.classList.add(self.settings.successClassName);
+							}
 
 					// remove error element
 		       		errorDiv && (errorDiv.getAttribute('data-type') === 'validator-error') && errorDiv.parentNode.removeChild(errorDiv);
@@ -675,6 +684,9 @@
 			var self = this,
 				errorDiv,
 				insertNodeError = function (refNode, errorObj) {
+
+					//remove success class
+					refNode.classList.remove(self.settings.successClassName);
 
 					// set error class
 					refNode.classList.add(self.settings.errorClassName);
