@@ -45,9 +45,6 @@
 			    // classname for error messages
 			    errorClassName: 'error',
 
-			    // classname for success messages
-			    successClassName: 'success',
-
 			    // remove spaces from validation field values
 			    removeSpaces: false,
 
@@ -411,9 +408,6 @@
 			    this.showErrors(e.target);
 			    !this.settings.showErrors && this.submitCallback(this.errors, false);
 			    
-			} else {
-				// add success class for this
-					e.target.classList.add(self.settings.successClassName);
 			}
 		},
 		_eventChangeWithDelay: function (e) {
@@ -454,6 +448,25 @@
 				self.settings[param] = settings[param];
 			});
 
+
+			// set locale
+			this.settings.locale = Settings.getSettings().language;
+
+			var langObj = Language.getLanguagesListByModule('Core'),
+			    messages = {},
+			    tmpArr = [],
+			    n;
+
+			for (n in langObj) {
+			    tmpArr = n.split('_');
+			    if (tmpArr[0] === 'validator' && tmpArr[1] && tmpArr[2]) {
+			        messages[tmpArr[1]] = messages[tmpArr[1]] || {};
+			        messages[tmpArr[1]][tmpArr[2]] = langObj[n];
+			    }
+			}
+
+			this.messages[this.settings.locale] = messages;
+
 			return this;
 		},
 
@@ -469,22 +482,26 @@
 			// each fields with data-rule attribute
 			Object.keys(fields).forEach(function (fieldIndex) {
 
-				rules = fields[fieldIndex].getAttribute('data-rule').split('|');
+				if (!fieldIndex.match(/^[0-9]+$/)) {
+					return;
+				}
 
-				Object.keys(rules).forEach(function (ruleIndex) {
+				rules = fields[fieldIndex].getAttribute('data-rule').split('|') || [];
+	
+				[].forEach.call(rules, function (rule, ruleIndex) {
+					if (rule.match(/-/gi)) {
 
-					// parse rule
-					if (rules[ruleIndex].match(/-/gi)) {
-
-					    params = rules[ruleIndex].split('-');
+					    params = rule.split('-');
 					    rules[ruleIndex] = params[0];
 					    params = params.splice(1);
 
-					    rules[ruleIndex] = [rules[ruleIndex], params];
+					    rules[ruleIndex] = [rule, params];
 					} else {
-					    rules[ruleIndex] = [rules[ruleIndex], []];
+					    rules[ruleIndex] = [rule, []];
 					}
 				});
+
+				
 
 				retData[fieldIndex] = {
 				    name: fields[fieldIndex].getAttribute('name'),
@@ -514,6 +531,8 @@
 
 			Object.keys(fields).forEach(function (n) {
 				
+
+
 				result = true;
 
 				// loop rules of this field
@@ -623,7 +642,7 @@
 						        }
 						    } catch (e) {
 						        ruleName = 'required';
-						        message = self.messages.en[ruleName][messageType];
+						        message = self.messages[self.settings.locale][ruleName][messageType];
 						    }
 
 						    // push value into params if params is empty
@@ -666,11 +685,8 @@
 
 		       		errorDiv = self.fields[n].handle.nextElementSibling;
 
-		       		// remove class error and add success
-							if (removeClass) {
-								self.fields[n].handle.classList.remove(self.settings.errorClassName);
-								self.fields[n].handle.classList.add(self.settings.successClassName);
-							}
+		       		// remove class error
+					removeClass && self.fields[n].handle.classList.remove(self.settings.errorClassName);
 
 					// remove error element
 		       		errorDiv && (errorDiv.getAttribute('data-type') === 'validator-error') && errorDiv.parentNode.removeChild(errorDiv);
@@ -684,9 +700,6 @@
 			var self = this,
 				errorDiv,
 				insertNodeError = function (refNode, errorObj) {
-
-					//remove success class
-					refNode.classList.remove(self.settings.successClassName);
 
 					// set error class
 					refNode.classList.add(self.settings.errorClassName);
