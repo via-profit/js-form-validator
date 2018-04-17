@@ -448,25 +448,6 @@
 				self.settings[param] = settings[param];
 			});
 
-
-			// set locale
-			this.settings.locale = Settings.getSettings().language;
-
-			var langObj = Language.getLanguagesListByModule('Core'),
-			    messages = {},
-			    tmpArr = [],
-			    n;
-
-			for (n in langObj) {
-			    tmpArr = n.split('_');
-			    if (tmpArr[0] === 'validator' && tmpArr[1] && tmpArr[2]) {
-			        messages[tmpArr[1]] = messages[tmpArr[1]] || {};
-			        messages[tmpArr[1]][tmpArr[2]] = langObj[n];
-			    }
-			}
-
-			this.messages[this.settings.locale] = messages;
-
 			return this;
 		},
 
@@ -482,26 +463,22 @@
 			// each fields with data-rule attribute
 			Object.keys(fields).forEach(function (fieldIndex) {
 
-				if (!fieldIndex.match(/^[0-9]+$/)) {
-					return;
-				}
+				rules = fields[fieldIndex].getAttribute('data-rule').split('|');
 
-				rules = fields[fieldIndex].getAttribute('data-rule').split('|') || [];
-	
-				[].forEach.call(rules, function (rule, ruleIndex) {
-					if (rule.match(/-/gi)) {
+				Object.keys(rules).forEach(function (ruleIndex) {
 
-					    params = rule.split('-');
+					// parse rule
+					if (rules[ruleIndex].match(/-/gi)) {
+
+					    params = rules[ruleIndex].split('-');
 					    rules[ruleIndex] = params[0];
 					    params = params.splice(1);
 
-					    rules[ruleIndex] = [rule, params];
+					    rules[ruleIndex] = [rules[ruleIndex], params];
 					} else {
-					    rules[ruleIndex] = [rule, []];
+					    rules[ruleIndex] = [rules[ruleIndex], []];
 					}
 				});
-
-				
 
 				retData[fieldIndex] = {
 				    name: fields[fieldIndex].getAttribute('name'),
@@ -531,8 +508,6 @@
 
 			Object.keys(fields).forEach(function (n) {
 				
-
-
 				result = true;
 
 				// loop rules of this field
