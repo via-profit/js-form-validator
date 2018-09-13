@@ -609,6 +609,11 @@
 						    self.errors = self.errors || {};
 
 						    // append error messages
+						    if (ruleName === 'required' && fields[n].rules[1] && fields[n].rules[1][0]) {
+						        ruleName = fields[n].rules[1][0];
+						        messageType = 'empty';
+						    }
+						    
 						    try {
 						        try {
 						            message = self.settings.messages[self.settings.locale][ruleName][messageType];
